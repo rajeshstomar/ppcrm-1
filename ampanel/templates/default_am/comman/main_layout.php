@@ -30,28 +30,6 @@ body {
 </head>
 
 <body>
-<?php
-	if(isset($_GET['rel']))
-	{
-		/*
-//		echo am_get_current_language().$_GET['rel'].'.php';exit;
-		if (file_exists(am_get_current_language().$_GET['rel'].'.php'))
-		{
-			require(am_get_current_language().$_GET['rel'].'.php');
-		}
-		else
-		{	
-			require(am_get_current_language().'filenotfound.php');
-		}
-		*/
-	}
-	else
-	{
-		//require(am_get_current_language().'welcome.php');
-	}
-//print am_get_current_language()."fsfs";
-?>
-
 <table width="100%" height="100%" border="0" cellspacing="0" cellpadding="0">
   <tr>
     <td align="center" valign="top"><table  border="0" cellspacing="0" cellpadding="0">

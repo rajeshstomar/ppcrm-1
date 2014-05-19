@@ -294,11 +294,9 @@ label.error
 	   	     <td class="black11" >
 	    
 	    <select name="type_owner" id="type_owner" value="">
-	     	<option value="">Select</option>
-	     	<!--<option value="owner" <?php if($broker_data[0]['type']=='owner') { ?> selected <?php } ?>>Owner</option>-->
 	     	<option value="brokerdirect" <?php if($broker_data[0]['type']=='brokerdirect') { ?> selected <?php } ?> >Broker-direct</option>
 	     	<option value="indirect" <?php if($broker_data[0]['type']=='indirect') { ?> selected <?php } ?> >Broker-Indirect</option>
-	    
+   
 	     </select>
 	    
 	     </td>

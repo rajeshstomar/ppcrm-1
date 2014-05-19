@@ -560,7 +560,7 @@ function get_fieldarray()
 				  	);
 				  	
 	
-	$fieldarr['broker_property'] = array (	"primaryid"=>"broker_property_id",
+/*$fieldarr['broker_property'] = array (	"primaryid"=>"broker_property_id",
 					"editlink" => "index.php?&rel=view_owner_property&id=",
 					"addlink" => "index.php?&rel=edit_owner_property",
 				// array("field name","Heading", alignment","width","display in  serach","function name" )
@@ -576,7 +576,26 @@ function get_fieldarray()
 					"tablename" => "property_requirement",
 					"orderby" => "broker_property_id"
 
-);	  	
+);	*/ 
+
+$fieldarr['broker_property'] = array (	"primaryid"=>"broker_property_id",
+					"editlink" => "index.php?&rel=view_owner_property&id=",
+					"addlink" => "index.php?&rel=edit_owner_property",
+				// array("field name","Heading", alignment","width","display in  serach","function name" )
+					"fieldarr" => array(
+array("broker_property_id","ID","left","25","Y",""),
+						array("trans_type","Type","left","22","Y",""),
+										array("property_main_type","Property Type","left","22","Y",""),
+										array("broker_property_id","Apartment Type","left","22","Y","get_apartment_type"),
+										array("scaleble","Area(sq ft)","left","22","Y",""),
+										array("add_line3","Area","left","22","Y",""),
+										array("price","Price / Rent","left","22","Y",""),
+										array("broker_property_id","Interested Customer","left","22","Y","am_get_interested_cust")),
+										
+					"tablename" => "property_requirement",
+					"orderby" => "broker_property_id"
+
+); 	
 			
 				  	
 	$fieldarr['site_visit_report'] = array (	"primaryid"=>"visit_id",
