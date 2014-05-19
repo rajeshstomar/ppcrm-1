@@ -1,0 +1,9 @@
+$fieldarr['docs'] = array (	"primaryid"=>"doc_id",
+				"editlink" => "index.php?&rel=upload_docs&id=",
+				"fieldarr" => array(array("user_docid","Doc ID","left","30","Y",""),array("concat(fname,' ',lname)","Name","left","30","Y",""),array("mem_type","Member Type","left","30","Y",""),array("mobile_no","Mobile","left","30","Y",""),array("date","Date","left","15","Y","am_get_date_display"),array("status","Status","left","15","Y","")),
+				"leftjoin" => " as d LEFT JOIN member_details as m on d.user_id=m.user_id ",
+				"tablename" => "documents",
+				"orderby" => "date DESC"				
+				                        
+				
+				);

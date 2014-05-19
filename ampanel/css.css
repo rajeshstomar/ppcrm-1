@@ -1,0 +1,79 @@
+body {
+   font-family:arial;
+   font-size:11px;
+   background-color:black;
+   background-repeat:repeat-x;
+}
+.content {
+   font-family:arial;
+   font-size:11px;
+   color: #000000;
+   font-weight:bold;
+   text-decoration:none;
+}
+.content1 {
+   font-family:arial;
+   font-size:10.2px;
+   color: #c8ced1;
+   font-weight:bold;
+   text-decoration:none;
+}
+.copyright {
+   font-family:arial;
+   font-size:11px;
+   color: #919191;
+   font-weight:regular;
+   text-decoration:none;
+}
+
+.register {
+   font-family:arial;
+   font-size:11px;
+   color: #cc1b21;
+   font-weight:regular;
+   text-decoration:none;
+}
+.heading {
+   font-family:arial;
+   font-size:14px;
+   color: #000000;
+   font-weight:bold;
+   text-decoration:none;
+}
+.listTh
+{
+	font-weight:bold;
+	background-color:#333333;
+	color:#FFFFFF;
+}
+.listTdEven
+{
+	background-color:#FFFFFF;
+}
+.listTdOdd
+{
+	/*background-color:#999999;*/
+	background-color:#E6E6E6;
+}
+
+input ,textarea {border:solid 1px #aeaeae; font:"Times New Roman", Times, serif}
+
+input ,text {width:300px}
+
+a:hover
+{
+color:#FF0000;
+text-decoration:underline;
+font-weight:bold;
+text-align:center;
+background-image:none;
+}
+a
+{
+color:#996600;
+text-decoration:none;
+font-weight:bold;
+text-align:center;
+background-image:none;
+}
+
