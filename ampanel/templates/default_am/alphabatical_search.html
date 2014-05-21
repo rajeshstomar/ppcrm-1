@@ -1,20 +1,3 @@
-<!DOCTYPE html> 
-<html> 
-<head> 
-<style>
-.searchAlph {
-    background-color: #FFFFFF;
-    border: 1px solid #DADADA;
-    cursor: pointer;
-    width: 42px;
-}
-.searchAlphselected {
-    background-color: #BBBBBB;
-    border: 1px solid #666666;
-    cursor: pointer;
-    width: 42px;
-}
-</style>
 <script> 
  var btns = "";
  var letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"; 
@@ -28,11 +11,7 @@
  } 
  function alphabetSearch(let)
  { 
-	window.location = "index.php?rel=common_listing&module=company&alpha_serach="+let; 
+	window.location = "index.php?rel=common_listing&module=<?php echo $module;?>&alpha_serach="+let; 
  } 
-</script> 
-</head>
-<body> 
-<script> document.write(btns); </script> 
-</body> 
-</html>
+  document.write(btns); 
+</script>

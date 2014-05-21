@@ -524,7 +524,8 @@ function get_fieldarray()
 					"editlink" => "index.php?&rel=view_customer&id=",
 					"addlink" => "index.php?&rel=edit_customer",
 				// array("field name","Heading", alignment","width","display in  serach","function name" )
-				                        "fieldarr" => array(array("client_id","Customer ID","left","16","Y",""),array("CONCAT(f_name,' ',l_name)","Customer Name","left","30","Y",""),array("mobile_no","Mobile No","left","10","Y",""),array("email1","Email ID","left","16","Y",""),array("client_id","Property Action","left","39","N","customer_property"),array("client_id","Days Old in System","left","30","N","days_old")),
+				                        "fieldarr" => array(/*array("client_id","Customer ID","left","16","Y",""),*/
+				                        	array("CONCAT(f_name,' ',l_name)","Customer Name","left","30","Y",""),array("mobile_no","Mobile No","left","10","Y",""),array("email1","Email ID","left","16","Y",""),array("client_id","Property Action","left","39","N","customer_property"),array("client_id","Days Old in System","left","30","N","days_old")),
 				                       "leftjoin" => "inner join client_property on client_personal_details.client_id=client_property.client_property_id", 
 				                        "tablename" => "client_personal_details",
 				                        "orderby" => "client_id"
@@ -534,7 +535,8 @@ function get_fieldarray()
 					"editlink" => "index.php?&rel=view_owner&id=",
 					"addlink" => "index.php?&rel=edit_owner",
 				// array("field name","Heading", alignment","width","display in  serach","function name" )
-				                        "fieldarr" => array(array("client_id","Owner ID","left","16","Y",""),array("CONCAT(f_name,' ',l_name)","Owner Name","left","9","Y",""),array("mobile_no","Mobile No","left","10","Y",""),array("email1","Email ID","left","16","Y",""),array("client_id","Property Action","left","39","N","owner_property"),array("client_id","Days Old in System","left","30","N","days_old")),
+				                        "fieldarr" => array(/*array("client_id","Owner ID","left","16","Y",""),*/
+				                        	array("CONCAT(f_name,' ',l_name)","Owner Name","left","9","Y",""),array("mobile_no","Mobile No","left","10","Y",""),array("email1","Email ID","left","16","Y",""),array("client_id","Property Action","left","39","N","owner_property"),array("client_id","Days Old in System","left","30","N","days_old")),
 				                       "leftjoin" => "left join property_requirement as pr on client_personal_details.client_id=pr.broker_owner_id", 
 				                        "tablename" => "client_personal_details",
 				                        "orderby" => "client_id"

@@ -77,6 +77,7 @@ function searchrec()
 	var refine_search = $("#refine_search").val();
 	
 	var serchurl = targetpage+'&keyword='+keyword+'&search_option='+search_option+'&refine_search='+refine_search;
+	
 	window.location = serchurl;
 }
 function checkcode(e)

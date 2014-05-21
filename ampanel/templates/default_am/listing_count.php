@@ -9,39 +9,51 @@
    else
    {
    	// Condition applying for Alphabetically search
-    if(isset($_GET['alpha_serach']) && $_GET['alpha_serach']!='')
-	{
-		$query = "select count(distinct(".$tablename.".".$primaryid.")) as tot from ".$tablename." ".$leftjoin." where 1=1 AND ".$tablename.".is_active =1 AND ".$tablename.".broker_name LIKE '".$_GET['alpha_serach']."%'  ".$ssql." ".$groupby;
-	}
-	elseif(isset($_REQUEST['adv_search'])){
+   	if(isset($_POST['field'])){
 		//code for generating the query conditions as per post data
-		$fields = $_POST['field'];
-		$adv_operation = $_POST['adv_operation'];
-		$value = $_POST['value'];
-		$query_type = $_POST['query_type'];
-		$size = sizeof($fields);
-		$query = "AND (";
-		foreach ($fields as $i => $field) {
-			if($adv_operation[$i]=="%"&&$field!="mobile1_no"&&$field!="address"){
-				$query = $query.'`'.$field.'`'." LIKE '".$value[$i].$adv_operation[$i]."' ";
-			}elseif($field=="mobile1_no"){
-				$query = $query."(mobile1_no LIKE '".$value[$i]."%' OR  mobile2_no LIKE '".$value[$i]."%')";
-			}elseif($field=="address"){
-				$query = $query."(add_line1 LIKE '%".$value[$i]."%' OR  add_line2_1 LIKE '%".$value[$i]."%'  OR  add_line2_2 LIKE '%".$value[$i]."%'  OR  add_line3 LIKE '%".$value[$i]."%')";
-			}else{
-				$query = $query.'`'.$field.'`'." ".$adv_operation[$i]." '".$value[$i]."' ";
+			$fields = $_POST['field'];
+			$adv_operation = $_POST['adv_operation'];
+			$value = $_POST['value'];
+			$query_type = $_POST['query_type'];
+			$size = sizeof($fields);
+			$query = "AND (";
+			foreach ($fields as $i => $field) {
+				if($adv_operation[$i]=="%"&&$field!="mobile1_no"&&$field!="address"){
+					$query = $query.'`'.$field.'`'." LIKE '".$value[$i].$adv_operation[$i]."' ";
+				}elseif($field=="mobile1_no"){
+					$query = $query."(mobile1_no LIKE '".$value[$i]."%' OR  mobile2_no LIKE '".$value[$i]."%')";
+				}elseif($field=="address"){
+					$query = $query."(add_line1 LIKE '%".$value[$i]."%' OR  add_line2_1 LIKE '%".$value[$i]."%'  OR  add_line2_2 LIKE '%".$value[$i]."%'  OR  add_line3 LIKE '%".$value[$i]."%')";
+				}else{
+					$query = $query.'`'.$field.'`'." ".$adv_operation[$i]." '".$value[$i]."' ";
+				}
+				
+				if($i<$size-1){
+					$query = $query.$query_type[$i]." ";
+				}else{
+					$query = $query.")";
+				}
 			}
-			
-			if($i<$size-1){
-				$query = $query.$query_type[$i]." ";
-			}else{
-				$query = $query.")";
-			}
-		}
-		//generating post data conditions over
-		//advanced searching data
-		$query = "select count(distinct(".$tablename.".".$primaryid.")) as tot from ".$tablename." ".$leftjoin." where 1=1 AND ".$tablename.".is_active =1  ".$query;
+			//generating post data conditions over
+			//advanced searching data
+			$query = "select count(distinct(".$tablename.".".$primaryid.")) as tot from ".$tablename." ".$leftjoin." where 1=1 AND ".$tablename.".is_active =1  ".$query;
+		
+		
 	}
+    elseif(isset($_GET['alpha_serach']) && $_GET['alpha_serach']!='')
+	{
+		if($module=='company')
+		{
+			$alphaSearchFieldBy = 'broker_name';
+		}
+		elseif($module=='customer' || $module=='owner')
+		{
+			$alphaSearchFieldBy = 'f_name';
+		}	
+
+		 $query = "select count(distinct(".$tablename.".".$primaryid.")) as tot from ".$tablename." ".$leftjoin." where 1=1 AND ".$tablename.".is_active =1 AND ".$tablename.".".$alphaSearchFieldBy." LIKE '".$_GET['alpha_serach']."%'  ".$ssql." ".$groupby;
+	}
+	
 	// Condition applying for refine search by specific columns
 	elseif(isset($_GET['refine_search']) && $_GET['refine_search']!='noValueSelected')
 	{
@@ -62,6 +74,7 @@
 	   }
 
 	}
+	
 	else
 	{
 		$query = "select count(distinct(".$tablename.".".$primaryid.")) as tot from ".$tablename." ".$leftjoin." where 1=1 AND ".$tablename.".is_active =1  ".$ssql." ".$groupby;

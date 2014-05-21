@@ -1,6 +1,6 @@
-<div id="adv_search" style="display:none;"><a class="btn" href="javascript:void(0);" onClick="show_id('adv_search_a'); $('#adv_search').hide();$('.searchAlph').show();">Show Basic Search</a>
+<div id="adv_search" style="display:none;"><a class="button" href="javascript:void(0);" onClick="show_id('adv_search_a'); $('#adv_search').hide();$('.searchAlph').show();">Show Basic Search</a>
 <br/>
-<form name="adv_search_form" action="index.php?rel=common_listing&module=company&adv_search=adv_search" method="POST">
+<form name="adv_search_form" action="index.php?rel=common_listing&module=company" method="POST">
 	<table id="mastertable">
 		<tr id="master_row">
 			<td>
@@ -38,7 +38,7 @@
 		
 	</table>
 	<br/>
-	<a href="#" class="add-btn" id="addScnt">Add Condition</a><a href="javascript:void(0);" class="add-btn" id="remScnt">Remove Last</a>
+	<a href="#" class="button" id="addScnt">Add Condition</a><a href="javascript:void(0);" class="button" id="remScnt">Remove Last</a>
 	<hr/>
 	<input type="submit" style="margin:0 40% 0 40%" name="submit" value="Submit" />
 </form>
@@ -67,7 +67,7 @@
   <?php if($_GET['module'] == 'company') { ?>
  
   <td colspan="4"><input value="Add New Firm" name="addnew" id="addnew" onclick="javascript:window.location='<?=$modulearray[$module]['addlink'];?>';"  type="button"></td>
-  <td colspan="4"><a href="#" id="adv_search_a" onClick="show_id('adv_search'); $(this).hide();$('.searchAlph').hide();">Show Advanced Search</a></td>
+  <td colspan="4"><a class="button" id="adv_search_a" onClick="show_id('adv_search'); $(this).hide();$('.searchAlph').hide();">Show Advanced Search</a></td>
   
   <?php } else if($_GET['module'] == 'broker')  { ?>
     <td colspan="8"><input value="Add New Broker" name="addnew" id="addnew" onclick="javascript:window.location='<?=$modulearray[$module]['addlink'];?>';"  type="button"></td>

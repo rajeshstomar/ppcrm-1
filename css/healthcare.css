@@ -289,6 +289,15 @@ padding: 10px;margin: 10px 0;position: relative;display: inline-block;width: 95%
 background:url('../images/fancybox12.png') -40px 0px;
 
 }
-    }
-    
-   
+.searchAlph {
+    background-color: #FFFFFF;
+    border: 1px solid #DADADA;
+    cursor: pointer;
+    width: 42px;
+}
+.searchAlphselected {
+    background-color: #BBBBBB;
+    border: 1px solid #666666;
+    cursor: pointer;
+    width: 42px;
+}
