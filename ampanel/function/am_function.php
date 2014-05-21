@@ -487,7 +487,8 @@ function get_fieldarray()
 				                              "orderby" => "company_id"
 				  	            ); */
 	## new Array defined as per requirment for listing of broker.  //Rajesh
-	$fieldarr['company'] = array("primaryid"=>"broker_id",
+	$fieldarr['company'] = array(
+					"primaryid"=>"broker_id",
 					"editlink" => "index.php?&rel=edit_company&mode=view&id=",
 					"addlink" => "index.php?&rel=edit_company",
 					"fieldarr" => array(array("broker_name","Broker Name","left","10","Y",""),

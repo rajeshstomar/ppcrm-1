@@ -13,6 +13,35 @@
 	{
 		$query = "select count(distinct(".$tablename.".".$primaryid.")) as tot from ".$tablename." ".$leftjoin." where 1=1 AND ".$tablename.".is_active =1 AND ".$tablename.".broker_name LIKE '".$_GET['alpha_serach']."%'  ".$ssql." ".$groupby;
 	}
+	elseif(isset($_REQUEST['adv_search'])){
+		//code for generating the query conditions as per post data
+		$fields = $_POST['field'];
+		$adv_operation = $_POST['adv_operation'];
+		$value = $_POST['value'];
+		$query_type = $_POST['query_type'];
+		$size = sizeof($fields);
+		$query = "AND (";
+		foreach ($fields as $i => $field) {
+			if($adv_operation[$i]=="%"&&$field!="mobile1_no"&&$field!="address"){
+				$query = $query.'`'.$field.'`'." LIKE '".$value[$i].$adv_operation[$i]."' ";
+			}elseif($field=="mobile1_no"){
+				$query = $query."(mobile1_no LIKE '".$value[$i]."%' OR  mobile2_no LIKE '".$value[$i]."%')";
+			}elseif($field=="address"){
+				$query = $query."(add_line1 LIKE '%".$value[$i]."%' OR  add_line2_1 LIKE '%".$value[$i]."%'  OR  add_line2_2 LIKE '%".$value[$i]."%'  OR  add_line3 LIKE '%".$value[$i]."%')";
+			}else{
+				$query = $query.'`'.$field.'`'." ".$adv_operation[$i]." '".$value[$i]."' ";
+			}
+			
+			if($i<$size-1){
+				$query = $query.$query_type[$i]." ";
+			}else{
+				$query = $query.")";
+			}
+		}
+		//generating post data conditions over
+		//advanced searching data
+		$query = "select count(distinct(".$tablename.".".$primaryid.")) as tot from ".$tablename." ".$leftjoin." where 1=1 AND ".$tablename.".is_active =1  ".$query;
+	}
 	// Condition applying for refine search by specific columns
 	elseif(isset($_GET['refine_search']) && $_GET['refine_search']!='noValueSelected')
 	{

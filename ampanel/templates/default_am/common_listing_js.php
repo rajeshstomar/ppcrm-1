@@ -140,3 +140,31 @@ $('#show_max_row option')
      .filter('[value=<?php echo trim($show);?>]')
          .attr('selected', true);
 </script>
+<script>
+var show_id = function(id){
+	$('#'+id).show();
+}
+</script>
+<script type="text/javascript">
+$(function() {
+	var scntDiv = $('#mastertable');
+	var i = $('#mastertable #master_row').size() + 1;
+
+	$('#addScnt').on('click', function() {
+		$("#mastertable tr:last-child").clone().appendTo(scntDiv);
+		i++;
+		if(i>2){
+			$("#mastertable tr:nth-last-child(2) td:last-child").show();
+		}
+		return false;
+	});
+
+	$('#remScnt').on('click', function() { 
+		if( i > 2 ) {
+			$('#mastertable tr:last-child').remove();
+			i--;
+		}
+		return false;
+	});
+});
+</script>

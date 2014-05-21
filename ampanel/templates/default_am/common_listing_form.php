@@ -1,6 +1,53 @@
+<div id="adv_search" style="display:none;"><a class="btn" href="javascript:void(0);" onClick="show_id('adv_search_a'); $('#adv_search').hide();$('.searchAlph').show();">Show Basic Search</a>
+<br/>
+<form name="adv_search_form" action="index.php?rel=common_listing&module=company&adv_search=adv_search" method="POST">
+	<table id="mastertable">
+		<tr id="master_row">
+			<td>
+				<select name="field[]">
+					<option value="broker_name">Broker Name</option>
+					<option value="company_name">Firm Name</option>
+					<option value="mobile1_no">Mobile</option>
+					<option value="area">Area</option>
+					<option value="sector">Sector</option>
+					<option value="category">Category</option>
+					<option value="email">Email</option>
+					<option value="pan_card_num">Pan Card No</option>
+					<option value="address">Address</option>
+				</select>
+			</td>
+			<td>
+				<select name="adv_operation[]">
+					<option value="LIKE">equals</option>
+					<option value="NOT LIKE">not equals</option>
+					<option value=">">greater than</option>
+					<option value="<">less than</option>
+					<option value="%">starts with</option>
+				</select>
+			</td>
+			<td>
+				<input name="value[]" type="text" placeholder="Input Value" />
+			</td>
+			<td id="and-or" style="display:none;">
+				<select name="query_type[]">
+					<option value="AND" selected="selected">and</option>
+					<option value="OR">or</option>
+				</select>
+			</td>
+		</tr>
+		
+	</table>
+	<br/>
+	<a href="#" class="add-btn" id="addScnt">Add Condition</a><a href="javascript:void(0);" class="add-btn" id="remScnt">Remove Last</a>
+	<hr/>
+	<input type="submit" style="margin:0 40% 0 40%" name="submit" value="Submit" />
+</form>
+</div>
 <form name="frmlist" id="frmlist" method="post" action="">
 <input type="hidden" name="mode" id="mode" value="">
 <input type="hidden" name="module" id="module" value="<?=$module;?>">
+
+
 <table width="100%" border="0" cellspacing="2" cellpadding="5">
 
   <?php 
@@ -19,7 +66,8 @@
   
   <?php if($_GET['module'] == 'company') { ?>
  
-  <td colspan="8"><input value="Add New Firm" name="addnew" id="addnew" onclick="javascript:window.location='<?=$modulearray[$module]['addlink'];?>';"  type="button"></td>
+  <td colspan="4"><input value="Add New Firm" name="addnew" id="addnew" onclick="javascript:window.location='<?=$modulearray[$module]['addlink'];?>';"  type="button"></td>
+  <td colspan="4"><a href="#" id="adv_search_a" onClick="show_id('adv_search'); $(this).hide();$('.searchAlph').hide();">Show Advanced Search</a></td>
   
   <?php } else if($_GET['module'] == 'broker')  { ?>
     <td colspan="8"><input value="Add New Broker" name="addnew" id="addnew" onclick="javascript:window.location='<?=$modulearray[$module]['addlink'];?>';"  type="button"></td>

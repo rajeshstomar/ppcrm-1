@@ -1,0 +1,18 @@
+a.add-btn{
+	display: inline;
+	background: #999;
+	border: 1px solid #333;
+	box-shadow: 1px 1px 1px #666;
+	text-decoration: none;
+	margin: 5px 2px 0 12px;
+	padding: 2px;
+	text-align: center;
+	color:white;
+	text-shadow:2px 2px #666;
+}
+a.add-btn:hover{
+	text-shadow:0px 0px #666;
+}
+a.add-btn:active{
+	box-shadow: 0px 0px 0px #666;
+}
