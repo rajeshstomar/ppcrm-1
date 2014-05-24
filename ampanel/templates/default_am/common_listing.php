@@ -1,7 +1,7 @@
 <?php
 //include("../dbconfig.php");
 //print_R($_SESSION); exit;
-//echo"<pre>";print_r($_GET);print_r($_POST);
+//echo"<pre>";print_r($_GET);//print_r($_POST);
 ## Getting field list as Array from am_function.php file as pre defined.
 $modulearray = get_fieldarray();
 //echo"<pre>";print_r($modulearray);

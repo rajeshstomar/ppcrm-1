@@ -495,9 +495,9 @@ function get_fieldarray()
 										array("company_name","Firm Name","left","10","Y",""),
 										array("mobile1_no","Mobile No","left","15","Y",""),
 										array("email","Email ID","left","15","Y",""),
-										array("pan_card_num","Pan Card No","left","15","Y",""),
-										array("broker_id","Listings","left","15","Y","broker_property"),
-										array("broker_id","Broker Details","left","20","N","broker_action_for_company_module"),
+										array("pan_card_num","Pan Card No","left","15","Y","",'','N'),
+										array("broker_id","Listings","left","6","Y","broker_property",'listing_count'),
+										array("broker_id","Broker Details","left","20","N","broker_action_for_company_module",'no_sorting','N'),
 										array("company_id","","","","N","")
 										),
 
@@ -524,8 +524,12 @@ function get_fieldarray()
 					"editlink" => "index.php?&rel=view_customer&id=",
 					"addlink" => "index.php?&rel=edit_customer",
 				// array("field name","Heading", alignment","width","display in  serach","function name" )
-				                        "fieldarr" => array(/*array("client_id","Customer ID","left","16","Y",""),*/
-				                        	array("CONCAT(f_name,' ',l_name)","Customer Name","left","30","Y",""),array("mobile_no","Mobile No","left","10","Y",""),array("email1","Email ID","left","16","Y",""),array("client_id","Property Action","left","39","N","customer_property"),array("client_id","Days Old in System","left","30","N","days_old")),
+				                        "fieldarr" => array(array("client_id","Customer ID","left","16","Y",""),
+								                        	array("CONCAT(f_name,' ',l_name)","Customer Name","left","30","Y",""),
+								                        	array("mobile_no","Mobile No","left","10","Y",""),
+								                        	array("email1","Email ID","left","16","Y",""),
+								                        	array("client_id","Property Action","left","39","N","customer_property"),
+								                        	array("client_id","Days Old in System","left","30","N","days_old")),
 				                       "leftjoin" => "inner join client_property on client_personal_details.client_id=client_property.client_property_id", 
 				                        "tablename" => "client_personal_details",
 				                        "orderby" => "client_id"
@@ -535,8 +539,12 @@ function get_fieldarray()
 					"editlink" => "index.php?&rel=view_owner&id=",
 					"addlink" => "index.php?&rel=edit_owner",
 				// array("field name","Heading", alignment","width","display in  serach","function name" )
-				                        "fieldarr" => array(/*array("client_id","Owner ID","left","16","Y",""),*/
-				                        	array("CONCAT(f_name,' ',l_name)","Owner Name","left","9","Y",""),array("mobile_no","Mobile No","left","10","Y",""),array("email1","Email ID","left","16","Y",""),array("client_id","Property Action","left","39","N","owner_property"),array("client_id","Days Old in System","left","30","N","days_old")),
+				                        "fieldarr" => array(array("client_id","Owner ID","left","6","Y",""),
+								                        	array("CONCAT(f_name,' ',l_name)","Owner Name","left","9","Y",""),
+								                        	array("mobile_no","Mobile No","left","10","Y",""),
+								                        	array("email1","Email ID","left","16","Y",""),
+								                        	array("client_id","Listings","left","13","N","owner_property"),
+								                        	array("client_id","Days Old in System","left","10","N","days_old")),
 				                       "leftjoin" => "left join property_requirement as pr on client_personal_details.client_id=pr.broker_owner_id", 
 				                        "tablename" => "client_personal_details",
 				                        "orderby" => "client_id"
@@ -1053,7 +1061,7 @@ function owner_property($customer_id)
 	
 	
 	
-	$html .= "<span><a href='index.php?rel=common_listing&module=owner_property&customer_id=".$customer_id."' >Property(".$prop_req_count.")</a></span>&nbsp;&nbsp;&nbsp;";
+	$html .= "<span><a href='index.php?rel=common_listing&module=owner_property&customer_id=".$customer_id."' >".$prop_req_count."</a></span>&nbsp;&nbsp;&nbsp;";
 	
 	return $html;
 }
@@ -1063,11 +1071,18 @@ function broker_property($customer_id)
 {
 	$html = '';
 	// Count Brokers for each firm
-	$req = "SELECT broker_owner_id FROM property_requirement WHERE broker_owner_id = '".$customer_id."' and ( flag='brokerdirect' || flag='indirect' ) ";
+	$req = "SELECT COUNT(broker_owner_id) AS totalListing FROM property_requirement WHERE is_active=1 AND broker_owner_id = '".$customer_id."' and ( flag='brokerdirect' || flag='indirect' ) ";
 	$prop_req = am_select($req);
-	$prop_req_count = count($prop_req);
+	$prop_req_count = $prop_req[0]['totalListing'];
 
-	$html .= "<span><a href='index.php?rel=common_listing&module=broker_property&broker_id=".$customer_id."' target='_blank' >".$prop_req_count."</a></span>&nbsp;&nbsp;&nbsp;";
+	$query_update = "UPDATE broker SET listing_count =".$prop_req_count." where is_active=1 AND broker_id = ".$customer_id;
+	$prop_req = am_select($query_update);
+	
+	$req_listing_Id = "SELECT listing_count FROM broker WHERE is_active=1 AND broker_id = ".$customer_id;
+	$res_listing_Id = am_select($req_listing_Id);
+
+
+	$html .= "<span><a href='index.php?rel=common_listing&module=broker_property&broker_id=".$customer_id."' target='_blank' >".$res_listing_Id[0]['listing_count']."</a></span>&nbsp;&nbsp;&nbsp;";
 	
 	return $html;
 }

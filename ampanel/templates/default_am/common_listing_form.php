@@ -80,7 +80,7 @@
     <?php } else if($_GET['module'] == 'interaction_report')  { ?>
     <td colspan="8"><input value="Add New Property" name="addnew" id="addnew" onclick="javascript:window.location='<?=$modulearray[$module]['addlink'];?>';"  type="button"></td>
     <?php } else if($_GET['module'] == 'property')  { ?>
-    <td colspan="8"><a href="index.php?&rel=edit_property&customer_id=<?php echo $_GET['customer_id']; ?>"><input value="Add New Property" name="addnew" id="addnew" type="button"></td>
+    <td colspan="8"><a href="index.php?&rel=edit_property&customer_id=<?php echo $_GET['customer_id']; ?>"><input value="Add Requirement" name="addnew" id="addnew" type="button"></td>
     
 
 <?php } else if($_GET['module'] == 'broker_property')  { ?>
@@ -167,13 +167,21 @@
 		$show_sort_image = $sort_image;
 	}
 ## showing the heading fields for listing data.
-	if($fieldarray[$i][6] == "N")
+	if($fieldarray[$i][7] == "N")
 	{
           echo "<th scope='col' width='".$fieldarray[$i][3]."%' class='black11_bold'><div align='".$fieldarray[$i][2]."'>".$fieldarray[$i][1].$show_sort_image."</div></th>";
        }
        else
        {
-          echo "<th scope='col' width='".$fieldarray[$i][3]."%' class='black11_bold'><div align='". $fieldarray[$i][2]."'><a href=\"".$sortlink."&sort_option=".$fieldarray[$i][0]."&sort=".$sort."\">".$fieldarray[$i][1]."</a>".$show_sort_image."</div></th>";
+          if($fieldarray[$i][6] =='listing_count')
+          {
+          	  echo "<th scope='col' width='".$fieldarray[$i][3]."%' class='black11_bold'><div align='". $fieldarray[$i][2]."'><a href=\"".$sortlink."&sort_option=".$fieldarray[$i][6]."&sort=".$sort."\">".$fieldarray[$i][1]."</a>".$show_sort_image."</div></th>";
+          }	
+          else
+          {
+          	  echo "<th scope='col' width='".$fieldarray[$i][3]."%' class='black11_bold'><div align='". $fieldarray[$i][2]."'><a href=\"".$sortlink."&sort_option=".$fieldarray[$i][0]."&sort=".$sort."\">".$fieldarray[$i][1]."</a>".$show_sort_image."</div></th>";
+          }
+        
        }   
       
            
@@ -221,7 +229,20 @@
         if($module == 'company' || $module == 'customer'  || $module == 'interaction_report' || $module == 'site_visit_report' )
         {    
 		//echo"<pre>";print_r($result_arr);
-        echo "<td class='black11' nowrap width='5%' ><a href='".$editlink.$result_arr[$j]['company_id']."' >View / Edit</a>";
+        if($module == 'company')
+        {
+        	$arrFieldKey = 'company_id';
+        }
+        else if($module == 'customer')
+        {
+        	$arrFieldKey = 'client_id';
+        }
+        else
+        {
+        	$arrFieldKey = $primaryid;
+        }	
+
+        echo "<td class='black11' nowrap width='5%' ><a href='".$editlink.$result_arr[$j][$arrFieldKey]."' >View / Edit</a>";
         }
         
         else if($module == 'property')

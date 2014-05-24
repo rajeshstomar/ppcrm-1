@@ -94,6 +94,9 @@ function am_insertupdate($data,$table,$pid='',$id='')
 	}
 
 }
+function am_insert_client_requirement($data){
+	$query = mysql_query("insert into client_property_new ( main_property_type,property_type,onerk,onebhk,twobhk,threebhk,fourbhk,specify_area,scaleble,carpet,office,furnished,warm_cell,state,city,locality,sector,near_building,is_choice_flex,flex_pref,flex_distance,latlong,min_price,max_price,status,client_pro_created_date,client_property_id ) values ('$data','residential','','1','1','','','','1340','','','1','','maharashtra','mumbai','Kharghar','Sector 11','Skylark','1','building','2',GeomFromText('$data['point']'),'20000000','40000000','1','24/05/2014','35' ) ")
+}
 function am_enum_select( $table , $field ){ 
         $query = " SHOW COLUMNS FROM ".$table." LIKE '".$field."' "; 
         $result = mysql_query( $query ) or die( 'error getting enum field ' . mysql_error() ); 

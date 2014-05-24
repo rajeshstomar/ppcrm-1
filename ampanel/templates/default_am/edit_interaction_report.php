@@ -226,7 +226,7 @@ label.error
 
 <?php if($_GET['id']=='') { ?>
 <h2><?php echo $mode; ?> Broker Property</h2>
-<table width="80%" border="0" cellspacing="2" cellpadding="2"> 
+<table width="80%" border="1" cellspacing="2" cellpadding="2"> 
  
  <?php
 
@@ -249,7 +249,7 @@ label.error
 	    <td class="black11">Form No:</td>
 	    <td class="black11"><input readonly type="text" name="form_no" id="form_no" value="<?php if($mode=='Add') { print 'LR'.$id_last; } else if($mode=='Update') { print 'LR'.$broker_data[0]['form_no']; } ?>" /></td>
   </tr>
-<?php if($_GET['owner_id']=='') { ?> 
+<?php if($_GET['owner_id']=='' && empty($_GET['brokerID'])) { ?> 
    <tr>
     	    <th colspan="2">Add Property For Broker</th>	
     	    <th colspan="2">Add Property For Owner</th>	
@@ -266,7 +266,7 @@ label.error
  <?php } ?> 
  
    </table>
-    <table  width="80%" border="0" cellspacing="2" cellpadding="2"  id="table1" <?php if($_GET['owner_id']=='') { ?>  style="display:none;" <?php } ?> >
+    <table  width="80%" border="1" cellspacing="2" cellpadding="2"  id="table1" <?php if($_GET['owner_id']=='') { ?>  style="display:none;" <?php } ?> >
    <tr >
 	    
 	    <td class="black11" id="brokerdiv" <?php if($_GET['owner_type']=='owner') { ?> style="display:none" <?php } ?>>Broker ID:</td>
@@ -323,7 +323,7 @@ label.error
   
   </table>
   
-  <table width="80%"  border="0" cellspacing="2" cellpadding="2" id="apartment1"  <?php if($broker_data[0]['property_main_type']=="commercial") { ?>  style="display:none;" <?php } ?>>
+  <table width="80%"  border="1" cellspacing="2" cellpadding="2" id="apartment1"  <?php if($broker_data[0]['property_main_type']=="commercial") { ?>  style="display:none;" <?php } ?>>
    <tr>
 	    <th class="black11">Type of Apartment:</th>
 	    
@@ -354,7 +354,7 @@ label.error
 	   
    </table>
   
-  <table  width="80%" border="0" cellspacing="2" cellpadding="2" id="table2" <?php if($_GET['owner_id']=='') { ?> style="display:none;" <?php } ?> >
+  <table  width="80%" border="1" cellspacing="2" cellpadding="2" id="table2" <?php if($_GET['owner_id']=='') { ?> style="display:none;" <?php } ?> >
     
       
      <!-- <tr>
@@ -547,12 +547,6 @@ label.error
 	     </td>
 	    
   </tr>
-   
-     
-     
-     
-  
-  
     <tr>
 	    <th>Address</th>
   </tr>
@@ -939,9 +933,7 @@ label.error
 		     <td class="black11" id="price_exp" style="display:none;">Expected Price:</td>
 		    <td class="black11" id="price_rent" >Expected Rent Per Month:</td>
 	    <?php } } ?>
-	    
-	   
-	    
+
   </tr>
    <tr>	
 	    
@@ -963,12 +955,7 @@ label.error
 	     </td>
 	    
   </tr>
-     
-     
-     
-  
-  
-    <tr>
+  <tr>
 	    <th>Address</th>
   </tr>
   
@@ -1030,7 +1017,7 @@ label.error
   </tr>
   <tr>
 	    <td class="black11" colspan="1">Note:</td>
-	    <td class="black11" colspan="3">Persius officiis eloquentiam ut sed,ius nostrud sensibus ea. Eu ullum inani posidonium quo,zzril quaestio intellegat in quo.</td>
+	    <td class="black11" colspan="3">Note will come here.</td>
 	    
   </tr>
   
@@ -1266,20 +1253,22 @@ function autopopulate1()
 <?php 
 ## condition for display the form for adding the brokers property detail from property listing page.
 if(isset($_GET['brokerID']) && $_GET['brokerID']!=''){?>
-<script type="text/javascript">
-$("#bro_own_id").val(<?=$_GET['brokerID'];?>);
-$("#table1").css("display","block");
-$("#table2").css("display","block");
-$("#brokerdiv").css("display","block");
-$("#ownerdiv").css("display","none");
+	<script type="text/javascript">
+	$("#bro_own_id").val(<?=$_GET['brokerID'];?>);
+	$('#bro_own_id').prop('readonly',true);
+	$('#bro_own_id').css('background-color','#DEDEDE');
+	$("#table1").css("display","block");
+	$("#table2").css("display","block");
+	$("#brokerdiv").css("display","block");
+	$("#ownerdiv").css("display","none");
 
-$("#brokertype").css("display","block");
-$("#ownertype").css("display","none");
+	$("#brokertype").css("display","block");
+	$("#ownertype").css("display","none");
 
 
-$("#brokermob").css("display","block");
-$("#ownermob").css("display","none");
-</script>
+	$("#brokermob").css("display","block");
+	$("#ownermob").css("display","none");
+	</script>
 <?php } ?>
 
 <script type="text/javascript">

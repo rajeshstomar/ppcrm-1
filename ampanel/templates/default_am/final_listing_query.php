@@ -80,23 +80,49 @@ else
 	}
 	
 	 ## condition applying for refine_search by column
-	elseif(isset($_GET['refine_search']) && $_GET['refine_search']!='noValueSelected')
+	elseif(isset($_GET['refine_search']) && $_GET['refine_search']!='noValueSelected' && $_GET['refine_search']!='undefined')
 	{
-	   if($_GET['refine_search']=='mobile')
-	   {
-			$ssql = "AND (mobile1_no LIKE '".$_GET['keyword']."%' OR  mobile2_no LIKE '".$_GET['keyword']."%')";
-			$final_query = $final_query ." from ".$tablename." ".$leftjoin." where 1=1 AND ".$tablename.".is_active =1 ".$ssql." ".$groupby." order by ".$tablename.".".$orderby." limit $start,$limit";
-	   }
-	   elseif($_GET['refine_search']=='address')
-	   {
-	   		$ssql = "AND (add_line1 LIKE '%".$_GET['keyword']."%' OR  add_line2_1 LIKE '%".$_GET['keyword']."%'  OR  add_line2_2 LIKE '%".$_GET['keyword']."%'  OR  add_line3 LIKE '%".$_GET['keyword']."%')";
-			$final_query = $final_query ." from ".$tablename." ".$leftjoin." where 1=1 AND ".$tablename.".is_active =1 ".$ssql." ".$groupby." order by ".$tablename.".".$orderby." limit $start,$limit";
-	   }
-	   else
-	   {
-			$ssql = "AND ".$_GET['refine_search']." LIKE '%".$_GET['keyword']."%'";
-			$final_query = $final_query ." from ".$tablename." ".$leftjoin." where 1=1 AND ".$tablename.".is_active =1 ".$ssql." ".$groupby." order by ".$tablename.".".$orderby." limit $start,$limit";
-	   }
+	     /*Refine search options as per the selected Modules*/
+	   	// For Module Company/Firm on common listing
+		if(isset($_GET['module']) && !empty($_GET['module']) &&  $_GET['module']=='company' &&  $_GET['rel']=='common_listing')
+		{
+			if($_GET['refine_search']=='mobile')
+			{
+				$ssql = "AND (mobile1_no LIKE '".$_GET['keyword']."%' OR  mobile2_no LIKE '".$_GET['keyword']."%')";
+				
+			}
+			elseif($_GET['refine_search']=='address')
+			{
+				$ssql = "AND (add_line1 LIKE '%".$_GET['keyword']."%' OR  add_line2_1 LIKE '%".$_GET['keyword']."%'  OR  add_line2_2 LIKE '%".$_GET['keyword']."%'  OR  add_line3 LIKE '%".$_GET['keyword']."%')";
+				
+			}
+			else
+			{
+				$ssql = "AND ".$_GET['refine_search']." LIKE '%".$_GET['keyword']."%'";
+				
+			}
+		}
+		// For Module Customer and Owner on common listing
+		if(isset($_GET['module']) && !empty($_GET['module']) &&  $_GET['module']=='customer' && $_GET['rel']=='common_listing')
+		{
+			if($_GET['refine_search']=='customer_name')
+			{
+				$ssql = "AND CONCAT(f_name,' ',l_name) LIKE '%".$_GET['keyword']."%'";
+				
+			}
+			elseif($_GET['refine_search']=='email')
+			{
+				$ssql = "AND (email1 LIKE '%".$_GET['keyword']."%' OR  email1 LIKE '%".$_GET['keyword']."%')";
+				
+			}
+			else
+			{
+				$ssql = "AND ".$_GET['refine_search']." LIKE '%".$_GET['keyword']."%'";
+				
+			}
+		}
+
+		$final_query = $final_query ." from ".$tablename." ".$leftjoin." where 1=1 AND ".$tablename.".is_active =1 ".$ssql." ".$groupby." order by ".$tablename.".".$orderby." limit $start,$limit";
 
 	}
 	/* Condition added for sorting over Cutomer name*/
@@ -104,6 +130,11 @@ else
 	{
 		$final_query = $final_query ." from ".$tablename." ".$leftjoin." where 1=1 AND ".$tablename.".is_active =1 ".$ssql." ".$groupby." order by ".$orderby." limit $start,$limit";
 	}
+
+	/*elseif($module=='company'&&  $_GET['sort_option']=='')
+	{
+		$final_query = $final_query ." from ".$tablename." ".$leftjoin." where 1=1 AND ".$tablename.".is_active =1 ".$ssql." ".$groupby." order by ".$orderby." limit $start,$limit";
+	}*/
 	
 	else
 	{
@@ -114,10 +145,6 @@ else
  //echo"<pre>";print_r($_GET);
  //echo"<br>".$final_query;
   $result_arr = am_select($final_query);
-//my_print_r($result_arr); exit;
-   //echo $final_query;exit;	
-	//$list_res = mysql_query($final_que) or die(mysql_error());
-	//print_r($result_arr);
   $status_array = am_enum_select($tablename, 'status');
 //  my_print_r($status_array);exit;
 ?> 

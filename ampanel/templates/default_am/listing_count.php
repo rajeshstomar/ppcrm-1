@@ -55,23 +55,47 @@
 	}
 	
 	// Condition applying for refine search by specific columns
-	elseif(isset($_GET['refine_search']) && $_GET['refine_search']!='noValueSelected')
+	elseif(isset($_GET['refine_search']) && $_GET['refine_search']!='noValueSelected' && $_GET['refine_search']!='undefined')
 	{
-	   if($_GET['refine_search']=='mobile')
-	   {
-		$ssql = "AND (mobile1_no = ".$_GET['keyword']." OR  mobile2_no =".$_GET['keyword'].")";
-		$query = "select count(distinct(".$tablename.".".$primaryid.")) as tot from ".$tablename." ".$leftjoin." where 1=1 AND ".$tablename.".is_active =1  ".$ssql." ".$groupby;
-	   }
-	   elseif($_GET['refine_search']=='address')
-	   {
-		$ssql = "AND (add_line1 LIKE '%".$_GET['keyword']."%' OR  add_line2_1 LIKE '%".$_GET['keyword']."%'  OR  add_line2_2 LIKE '%".$_GET['keyword']."%'  OR  add_line3 LIKE '%".$_GET['keyword']."%')";
-		$query = "select count(distinct(".$tablename.".".$primaryid.")) as tot from ".$tablename." ".$leftjoin." where 1=1 AND ".$tablename.".is_active =1  ".$ssql." ".$groupby;
-	   }
-	   else
-	   {
-			$ssql = "AND ".$_GET['refine_search']." LIKE '%".$_GET['keyword']."%'";
-			$query = "select count(distinct(".$tablename.".".$primaryid.")) as tot from ".$tablename." ".$leftjoin." where 1=1 AND ".$tablename.".is_active =1  ".$ssql." ".$groupby;
-	   }
+	   /*Refine search options as per the selected Modules*/
+	   	// For Module Company/Firm on common listing
+		if(isset($_GET['module']) && !empty($_GET['module']) &&  $_GET['module']=='company' &&  $_GET['rel']=='common_listing')
+		{
+			if($_GET['refine_search']=='mobile')
+			{
+				$ssql = "AND (mobile1_no = ".$_GET['keyword']." OR  mobile2_no =".$_GET['keyword'].")";
+				$query = "select count(distinct(".$tablename.".".$primaryid.")) as tot from ".$tablename." ".$leftjoin." where 1=1 AND ".$tablename.".is_active =1  ".$ssql." ".$groupby;
+			}
+			elseif($_GET['refine_search']=='address')
+			{
+				$ssql = "AND (add_line1 LIKE '%".$_GET['keyword']."%' OR  add_line2_1 LIKE '%".$_GET['keyword']."%'  OR  add_line2_2 LIKE '%".$_GET['keyword']."%'  OR  add_line3 LIKE '%".$_GET['keyword']."%')";
+				$query = "select count(distinct(".$tablename.".".$primaryid.")) as tot from ".$tablename." ".$leftjoin." where 1=1 AND ".$tablename.".is_active =1  ".$ssql." ".$groupby;
+			}
+			else
+			{
+				$ssql = "AND ".$_GET['refine_search']." LIKE '%".$_GET['keyword']."%'";
+				$query = "select count(distinct(".$tablename.".".$primaryid.")) as tot from ".$tablename." ".$leftjoin." where 1=1 AND ".$tablename.".is_active =1  ".$ssql." ".$groupby;
+			}
+		}
+		// For Module Customer and Owner on common listing
+		elseif(isset($_GET['module']) && !empty($_GET['module']) &&  $_GET['module']=='customer' && $_GET['rel']=='common_listing')
+		{
+			if($_GET['refine_search']=='customer_name')
+			{
+				$ssql = "AND CONCAT(f_name,' ',l_name) LIKE '%".$_GET['keyword']."%'";
+				$query = "select count(distinct(".$tablename.".".$primaryid.")) as tot from ".$tablename." ".$leftjoin." where 1=1 AND ".$tablename.".is_active =1  ".$ssql." ".$groupby;
+			}
+			elseif($_GET['refine_search']=='email')
+			{
+				$ssql = "AND (email1 LIKE '%".$_GET['keyword']."%' OR  email1 LIKE '%".$_GET['keyword']."%')";
+				$query = "select count(distinct(".$tablename.".".$primaryid.")) as tot from ".$tablename." ".$leftjoin." where 1=1 AND ".$tablename.".is_active =1  ".$ssql." ".$groupby;
+			}
+			else
+			{
+				$ssql = "AND ".$_GET['refine_search']." LIKE '%".$_GET['keyword']."%'";
+				$query = "select count(distinct(".$tablename.".".$primaryid.")) as tot from ".$tablename." ".$leftjoin." where 1=1 AND ".$tablename.".is_active =1  ".$ssql." ".$groupby;
+			}
+		}
 
 	}
 	
@@ -81,7 +105,7 @@
 	}
    
    }	
-
+//echo $query;
 	$tot_arr = am_select($query);
 	$fieldarray = $modulearray[$module]['fieldarr'];
 	//print_R($fieldarray);exit;
