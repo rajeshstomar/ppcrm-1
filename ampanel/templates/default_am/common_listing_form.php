@@ -173,6 +173,7 @@
        }
        else
        {
+          // Check for sorting as per listing counts
           if($fieldarray[$i][6] =='listing_count')
           {
           	  echo "<th scope='col' width='".$fieldarray[$i][3]."%' class='black11_bold'><div align='". $fieldarray[$i][2]."'><a href=\"".$sortlink."&sort_option=".$fieldarray[$i][6]."&sort=".$sort."\">".$fieldarray[$i][1]."</a>".$show_sort_image."</div></th>";
@@ -201,29 +202,37 @@
         echo "<tr><td class='black11' width='5%' ><input id='chkme' name='chk[]' value='".$result_arr[$j][$primaryid]."' type='checkbox'></td>";
         for($i=0,$ni=count($fieldarray);$i<$ni;$i++)
         { 
-	//	echo"<pre>"; print_r($fieldarray);
-		 if($fieldarray[$i][5] == 'users_log' && isset($_REQUEST['id_bc']))
-        		continue;
-		if(trim($fieldarray[$i][5]) != "")
-		{
-			$val = call_user_func($fieldarray[$i][5] , $result_arr[$j][$fieldarray[$i][0]]);
-			
-			
-		}
-		else
-		{
-			//echo"<pre>";print_r($result_arr[$j]);echo"$j====".$fieldarray[$i][0]."<br>";
-			$val = $result_arr[$j][$fieldarray[$i][0]];
-		}
+		//	echo"<pre>"; print_r($fieldarray);
+			 if($fieldarray[$i][5] == 'users_log' && isset($_REQUEST['id_bc']))
+	        		continue;
+			if(trim($fieldarray[$i][5]) != "")
+			{
+				$val = call_user_func($fieldarray[$i][5] , $result_arr[$j][$fieldarray[$i][0]]);
+				
+				
+			}
+			else
+			{
+				//echo"<pre>";print_r($result_arr[$j]);echo"$j====".$fieldarray[$i][0]."<br>";
+				$val = $result_arr[$j][$fieldarray[$i][0]];
+			}
 		
-	          if($module=='company' && $fieldarray[$i][0] == company_id)
-	          {
-	          	 echo "<td class='black11' align='".$fieldarray[$i][2]."'></td>"; 
-	          }
-	          else
-	          {
-	            echo "<td class='black11' align='".$fieldarray[$i][2]."'>".$val."</td>"; 
-	          } 
+			if($module=='company' && $fieldarray[$i][0] == company_id)
+			{
+				 echo "<td class='black11' align='".$fieldarray[$i][2]."'></td>"; 
+			}
+			else
+			{
+				if(empty($val))
+				{
+					echo "<td class='black11' align='".$fieldarray[$i][2]."'>-</td>"; 
+				}
+				else
+				{
+					echo "<td class='black11' align='".$fieldarray[$i][2]."'>".$val."</td>"; 
+				}
+				
+			} 
 
         }
         if($module == 'company' || $module == 'customer'  || $module == 'interaction_report' || $module == 'site_visit_report' )

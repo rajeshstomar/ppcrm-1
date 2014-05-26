@@ -2,7 +2,21 @@
 //include("../dbconfig.php");
 	//print_R($_REQUEST);exit;
 	
-	
+	function get_latlong($address){
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, "http://maps.google.com/maps/api/geocode/json?address=$address&sensor=false&region=india");
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_PROXYPORT, 3128);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+		$response = curl_exec($ch);
+		curl_close($ch);
+		$response = json_decode($response); 
+		$lat = $response->results[0]->geometry->location->lat;
+		$long = $response->results[0]->geometry->location->lng;
+		return array("latitude"=> $lat, "longitude"=> $long);
+	}
+
 	if($_POST['price_type1']!="")
 	{
 		 $price1=get_price_encrypt($_POST['price_type1'],$_POST['price1']);
@@ -49,17 +63,24 @@
 			
     	$firm_no=$firm_no_array[1];	
 
-	$data = array('broker_owner_id' => $_POST['bro_own_id'],
+    $address = trim($_POST['state'])."+".str_replace(' ', '', $_POST['city'])."+".str_replace(' ', '', $_POST['locality'])."+".str_replace(' ', '', $_POST['sector']);
+	echo $address;
+	$latlongarray = get_latlong($address);
+	$latitude = $latlongarray['latitude'];
+	$longitude = $latlongarray['longitude'];
+
+	$data = array(
+			  'broker_owner_id' => $_POST['bro_own_id'],
 		      'date' => $_POST['date'],
 		      'form_no' => $_POST['form_no'],	
 		      'pan_or_mobile' => $_POST['pan_mob_no'],
 		      'property_main_type' => $_POST['residential'],
-		     	'onerk' => $_POST['bhk'],
+		      'onerk' => $_POST['bhk'],
 			
 		      'specify_area' => $_POST['specify_area'],
 		      'scaleble' => $_POST['scaleble'],
 		      'carpet' => $_POST['carpet'],
-		     'office' => $_POST['office_check'],
+		      'office' => $_POST['office_check'],
 		      //'retail' => $_POST['retail'],
 		      'furnished' => $_POST['furnished'],
 		     // 'unfurnished' => $_POST['unfurnished'],
@@ -69,18 +90,22 @@
 		      'trans_type' => $_POST['transaction'],
 		      'type' => $_POST['user_type'],
 		      'near_building_id' => $_POST['near_buil_id'],
-		      'floor' => $_POST['floor1'],
-		      'add_line1' => $_POST['add_line1'],
-		      'add_line2' => $_POST['add_line2'],
-		      'add_line3' => $_POST['add_line3'],
-		       'landmark' => $_POST['landmark'],
+		      'flat' => $_POST['flat'],
+		      'nearest_road' => $_POST['nearest_road'],
+		      'landmark'  => $_POST['landmark'],
+		      'sector' => $_POST['sector'],
+		      'locality' => $_POST['locality'],
+		      'nearest_road' => $_POST['nearest_road'],
 		      'city' => $_POST['city'],
 		      'zip_code' => $_POST['zip_code'],
-		      'state_id' => $_POST['state'],
+
+		      'state' => $_POST['state'],
 		      'country' => $_POST['country'],
 		      'property_created_date' => $date,
 		      'property_updated_date' => $date1, 	
-		      'flag' => $flage);
+		      'flag' => $flage
+		    );
+			$latlong = "POINT($latitude $longitude)";
 		      
 		//print_R($data);exit;      
 		      
@@ -111,13 +136,13 @@ if($_REQUEST['mode'] == "Update")
 	}
 	
 
-	am_insertupdate($data,'property_requirement','broker_property_id',$_POST['broker_property_id']);
+	am_insertupdate($data,'property_requirement_new','broker_property_id',$_POST['broker_property_id'], $latlong);
 	$msg = "Broker Property Updated Successfully on this date ".$_POST['date'];
 	am_goto_page("index.php?rel=edit_interaction_report&id=".$_POST['broker_property_id']."&msg=".$msg);
 }
 else if($_REQUEST['mode'] == "Add")
 {	
-	am_insertupdate($data,'property_requirement');
+	am_insertupdate($data,'property_requirement_new', '', '', $latlong);
 	$msg = "Broker Property Added Successfully on this date ".$_POST['date'];
 	if($_POST['addmore']=='AddMoreProperty')
 	{

@@ -6,7 +6,7 @@ if(isset($refineModule) && !empty($refineModule) && $refineModule=='company' && 
 {
 	$refineSerachFieldArr = $refineSearch_company;
 }
-elseif(isset($refineModule) && !empty($refineModule) && $refineModule=='customer' && $refineRel=='common_listing')
+elseif(isset($refineModule) && !empty($refineModule) && ($refineModule=='customer' || $refineModule=='owner') && $refineRel=='common_listing')
 {
 	$refineSerachFieldArr = $refineSearch_customer;
 }

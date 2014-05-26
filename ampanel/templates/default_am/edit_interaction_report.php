@@ -6,7 +6,7 @@ if(isset($_REQUEST['id']) && is_numeric($_REQUEST['id']))
 {
 	$id = $_REQUEST['id'];
 	
-	$sel_que ="select * from property_requirement left join building_database on property_requirement.near_building_id=building_database.id_building where broker_property_id= '".$id."' ";
+	$sel_que ="select * from property_requirement_new left join building_database on property_requirement.near_building_id=building_database.id_building where broker_property_id= '".$id."' ";
 	$broker_data = am_select($sel_que);
 	//my_print_R($broker_data);exit;
 	$mode = "Update";
@@ -170,11 +170,11 @@ for($i=0;$i<count($build_data);$i++)
                 var selectedObj = ui.item;
 		var tmp1 = selectedObj.val.split("|");
 		$("#city").val(tmp1[0]); 
-		$("#near_buil_id").val(tmp1[1]); 
-		$("#add_line2").val(tmp1[2]); 
-		$("#add_line1").val(tmp1[3]); 
-		$("#add_line3").val(tmp1[4]);
-    $("#landmark").val(tmp1[5]); 
+		//$("#near_buil_id").val(tmp1[1]); 
+		//$("#add_line2").val(tmp1[2]); 
+		//$("#add_line1").val(tmp1[3]); 
+		//$("#add_line3").val(tmp1[4]);
+    //$("#landmark").val(tmp1[5]); 
 		//$("#add_line2").val(tmp1[3]+','+tmp1[4]); 
 
 		
@@ -553,33 +553,35 @@ label.error
   
   <tr>
     <td class="black11">Nearest Building:</td>
-    <td class="black11"><input type="text" name="nearest_building" id="nearest_building" value="<?php print $broker_data[0]['b_name']?>" /><input type="hidden" name="near_buil_id" id="near_buil_id" value="<?php print $broker_data[0]['near_building_id']?>" /></td>
+    <td class="black11"><input type="text" name="near_building_id" id="nearest_building" value="<?php print $broker_data[0]['b_name']?>" /><input type="hidden" name="near_buil_id" id="near_buil_id" value="<?php print $broker_data[0]['near_building_id']?>" /></td>
     
   </tr>
    <tr>
-	    <td class="black11" >Building Name / Flat No/ Floor</td>
-	    <td class="black11"><input type="text" name="floor1" id="floor" value="<?php print $broker_data[0]['floor']?>" /></td>
+	    <td class="black11" >Flat No./House No./Floor</td>
+	    <td class="black11"><input type="text" name="flat" id="" value="" /></td>
 	     
   </tr>
    <tr>
-	    <td class="black11" >Region / Area</td>
-	    <td class="black11"><input type="text" name="add_line3" id="add_line3" value="<?php print $broker_data[0]['add_line3']?>" /></td>
+	    <td class="black11" >Nearest Road</td>
+	    <td class="black11"><input type="text" name="nearest_road" id="add_line2" value="<?php print $broker_data[0]['nearest_road']?>" />
+	    </td>
 	     
   </tr>
-    <tr>
-	    <td class="black11" >Nearest Road</td>
-	    <td class="black11"><input type="text" name="add_line2" id="add_line2" value="<?php print $broker_data[0]['add_line2']?>" /></td>
+  <tr>
+	    <td class="black11" >Landmark (if any)</td>
+	    <td class="black11"><input type="text" name="landmark" value="" />
+	    </td>
 	     
   </tr>
   
    <tr>
-	    <td class="black11" >Street Name</td>
-	    <td class="black11"><input type="text" name="add_line1" id="add_line1" value="<?php print $broker_data[0]['add_line1']?>" /></td>
+	    <td class="black11" >Sub-Locality/Sector</td>
+	    <td class="black11"><input type="text" name="sector" id="add_line1" value="" /></td>
 	     
   </tr>
      <tr>
-	    <td class="black11" >Location Landmark</td>
-	    <td class="black11"><input type="text" name="landmark" id="landmark" value="<?php print $broker_data[0]['landmark']?>" /></td>
+	    <td class="black11" >Locality/Suburb</td>
+	    <td class="black11"><input type="text" name="locality" id="landmark" value="" /></td>
 	     
   </tr>
    <tr>
@@ -596,8 +598,8 @@ label.error
 	    <td class="black11" >State</td>
 	    <td class="black11">
 	    	 <select name="state"  id="state"  value="">
-		    	<option value="">Select State</option>
-		    	<?php echo get_states_options($broker_data[0]['state_id']); ?>
+		    	<option value="Maharashtra" selected="selected">Maharashtra</option>
+		    	
 		 </select>
 	    </td>
 	     
@@ -611,7 +613,7 @@ label.error
  
  <?php if($mode!='Update') { ?>
    <tr>
-	    <td class="black11" colspan="1"><input type="submit" onClick="return prop_exist(this);" name="addmore2" id="add_more2" value="AddMoreProperty"></td>
+	    <td class="black11" colspan="1"><input type="submit" onClick="return prop_exist(this);" name="addmore2" id="add_more2" value="Add More Property"></td>
 	    <input type="hidden" name="addmore" value="">
 <?php } ?>	    
  
@@ -639,7 +641,7 @@ label.error
      
   <tr>
     <td>&nbsp;</td>
-    <td class="black11"><input type="submit" name="submit1" value="<?=$mode;?>" onClick="return prop_exist(this);"/>&nbsp;<!--<input type="reset" name="reset"  value="Reset" />&nbsp;<input type="button" name="cancel" onclick="javascript:window.location='index.php?rel=common_listing&module=static_pages';" value="Cancel" />-->
+    <td class="black11"><input type="submit" name="submit1" value="<?=$mode;?>"/>&nbsp;<!--<input type="reset" name="reset"  value="Reset" />&nbsp;<input type="button" name="cancel" onclick="javascript:window.location='index.php?rel=common_listing&module=static_pages';" value="Cancel" />-->
     <div class="loading" id="loading"></div>
     </td>
   </tr>
@@ -993,9 +995,8 @@ label.error
 	    <td class="black11" >State</td>
 	    <td class="black11">
 	    	 <select name="state"  id="state"  value="">
-		    	<option value="">Select State</option>
-		    	<?php echo get_states_options($broker_data[0]['state_id']); ?>
-		 </select>
+		    	<option value="">Maharashtra</option>
+		 	 </select>
 	    </td>
 	     
   </tr>

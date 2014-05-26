@@ -9,14 +9,14 @@ if($where != '')
 	$ssql .= " AND flag='".$where."'";
 $key = $_REQUEST['col_name']; 
 $cols = explode(',',$key);
-if($table_name == 'broker')     // Table and query name changed broker_firm to broker.:- Rajesh
+if($table_name == 'broker_firm')     // Table and query name changed broker_firm to broker.:- Rajesh
 {
 	$cols[] = "broker_name";
 	$cols[] = "mobile1_no";
 	$cols[] = "pan_card_num";
 	$cols[] = "broker_id";
 	$cols[] = "email";	
-	$leftjoin .= " LEFT JOIN broker_firm as broker_firm ON broker.firm_id = broker_firm.company_id ";
+	$leftjoin .= "LEFT JOIN broker AS broker ON broker.firm_id = broker_firm.company_id  AND broker.is_active =1";
 }
 
 if($table_name == 'property_requirement')

@@ -9,7 +9,7 @@
   }
  else if($module == 'company' )
   {
-  	$final_query = "select distinct(".$tablename.".".$primaryid.") ,";
+  	$final_query = "select distinct(".$foRrunTimeTableName.".".$primaryid.") ,";
   }
   else
   {
@@ -43,16 +43,17 @@ else
 			$size = sizeof($fields);
 			$query = "AND (";
 			foreach ($fields as $i => $field) {
-				if($adv_operation[$i]=="%"&&$field!="mobile1_no"&&$field!="address"){
+				if($adv_operation[$i]=="%" && $field!="mobile1_no" && $field!="address" && $field!="area" && $field!="sector"){
 					$query = $query.'`'.$field.'`'." LIKE '".$value[$i].$adv_operation[$i]."' ";
 				}elseif($field=="mobile1_no"){
 					$query = $query."(mobile1_no LIKE '".$value[$i]."%' OR  mobile2_no LIKE '".$value[$i]."%')";
-				}elseif($field=="address"){
-					$query = $query."(add_line1 LIKE '%".$value[$i]."%' OR  add_line2_1 LIKE '%".$value[$i]."%'  OR  add_line2_2 LIKE '%".$value[$i]."%'  OR  add_line3 LIKE '%".$value[$i]."%')";
+				}elseif($field=="address"  || $field=="area" || $field=='sector'){
+					//$query = $query."(add_line1 LIKE '%".$value[$i]."%' OR  add_line2_1 LIKE '%".$value[$i]."%'  OR  add_line2_2 LIKE '%".$value[$i]."%'  OR  add_line3 LIKE '%".$value[$i]."%')";
+					$query = $query."(pr.add_line1 LIKE '%".$value[$i]."%' OR  pr.add_line2 LIKE '%".$value[$i]."%'  OR  pr.add_line3 LIKE '%".$value[$i]."%')";
 				}else{
 					$query = $query.'`'.$field.'`'." ".$adv_operation[$i]." '".$value[$i]."' ";
 				}
-				
+
 				if($i<$size-1){
 					$query = $query.$query_type[$i]." ";
 				}
@@ -70,13 +71,17 @@ else
 		if($module=='company')
 		{
 			$alphaSearchFieldBy = 'broker_name';
+			$alphaSearchtable = $foRrunTimeTableName;
+			$orderbyAlphaSearch = $alphaSearchFieldBy;
 		}
 		elseif($module=='customer' || $module=='owner')
 		{
 			$alphaSearchFieldBy = 'f_name';
+			$alphaSearchtable = $tablename;
+			$orderbyAlphaSearch = $orderby;
 		}	
 
-		$final_query = $final_query ." from ".$tablename." ".$leftjoin." where 1=1 AND ".$tablename.".is_active =1 AND ".$tablename.".".$alphaSearchFieldBy." LIKE '".$_GET['alpha_serach']."%' ".$ssql." ".$groupby." order by ".$tablename.".".$orderby." limit $start,$limit";
+		$final_query = $final_query ." from ".$tablename." ".$leftjoin." where 1=1 AND ".$tablename.".is_active =1 AND ".$alphaSearchtable.".".$alphaSearchFieldBy." LIKE '".$_GET['alpha_serach']."%' ".$ssql." ".$groupByFieldName." order by ".$alphaSearchtable.".".$orderbyAlphaSearch." limit $start,$limit";
 	}
 	
 	 ## condition applying for refine_search by column
@@ -91,7 +96,7 @@ else
 				$ssql = "AND (mobile1_no LIKE '".$_GET['keyword']."%' OR  mobile2_no LIKE '".$_GET['keyword']."%')";
 				
 			}
-			elseif($_GET['refine_search']=='address')
+			elseif($_GET['refine_search']=='address' || $_GET['refine_search']=='area' || $_GET['refine_search']=='sector')
 			{
 				$ssql = "AND (add_line1 LIKE '%".$_GET['keyword']."%' OR  add_line2_1 LIKE '%".$_GET['keyword']."%'  OR  add_line2_2 LIKE '%".$_GET['keyword']."%'  OR  add_line3 LIKE '%".$_GET['keyword']."%')";
 				
@@ -130,20 +135,42 @@ else
 	{
 		$final_query = $final_query ." from ".$tablename." ".$leftjoin." where 1=1 AND ".$tablename.".is_active =1 ".$ssql." ".$groupby." order by ".$orderby." limit $start,$limit";
 	}
+	elseif($module=='company')
+	{
+		// Checking if sort option is slected
+		if(isset($_GET['sort_option']) && !empty($_GET['sort_option']))
+		{
+			if( (preg_match('/CONCAT/',$_GET['sort_option']) || preg_match('/concat/',$_GET['sort_option'])))
+			{
+				$orderByTablename ='';
+			}
+			elseif($_GET['sort_option'] != 'company_name')
+			{
+				$orderByTablename = $foRrunTimeTableName.".";
+			}			
+			else
+			{
+				$orderByTablename = $tablename.".";
+			}
 
-	/*elseif($module=='company'&&  $_GET['sort_option']=='')
-	{
-		$final_query = $final_query ." from ".$tablename." ".$leftjoin." where 1=1 AND ".$tablename.".is_active =1 ".$ssql." ".$groupby." order by ".$orderby." limit $start,$limit";
-	}*/
-	
+			$final_query = $final_query ." from ".$tablename." ".$leftjoin." where 1=1 AND ".$tablename.".is_active =1 ".$ssql." ".$groupby." order by ".$orderByTablename."".$orderby."  limit $start,$limit";
+			
+		}
+		else
+		{
+			$final_query = $final_query ." from ".$tablename." ".$leftjoin." where 1=1 AND ".$tablename.".is_active =1 ".$ssql." ".$groupByFieldName." order by ".$tablename.".".$orderby." DESC limit $start,$limit";
+		}
+
+	}
+	// intial loading page company listing
 	else
-	{
-		$final_query = $final_query ." from ".$tablename." ".$leftjoin." where 1=1 AND ".$tablename.".is_active =1 ".$ssql." ".$groupby." order by ".$tablename.".".$orderby." limit $start,$limit";
+	{      
+			$final_query = $final_query ." from ".$tablename." ".$leftjoin." where 1=1 AND ".$tablename.".is_active =1 ".$ssql." ".$groupby." order by ".$tablename.".".$orderby." limit $start,$limit";
 	}
 	
 }
  //echo"<pre>";print_r($_GET);
- //echo"<br>".$final_query;
+ //echo"<br>".$final_query; //exit;
   $result_arr = am_select($final_query);
   $status_array = am_enum_select($tablename, 'status');
 //  my_print_r($status_array);exit;

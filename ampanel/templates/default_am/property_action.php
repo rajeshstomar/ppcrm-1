@@ -84,13 +84,13 @@
 			'is_choice_flex' 	=> $_POST['is_choice_flex'],
 			'flex_pref' 	=> $_POST['flex_pref'],
 			'flex_distance' 	=> $_POST['flex_distance'],
-			'latlong'		=> "POINT($latitude $longitude)",
 			//'cold_cell' => $_POST['cold_cell'],
 			'min_price' => $final_min_price,
 			'max_price' => $final_max_price,
 			'status' => $_POST['status'],
 			'client_pro_created_date' => $date
 			);
+			$latlong = "POINT($latitude $longitude)";
 		
 			
 		//$area=$_POST['area1'].":".$_POST['area2'].":".$_POST['area3'].":".$_POST['area4'];
@@ -106,7 +106,7 @@ if($_REQUEST['mode'] == "Update")
 {	
 	//print_R($_POST);
 	//echo $POST['client_id'];exit;
-	//am_insertupdate($data,'client_personal_details','client_id',$_POST['client_id']);
+	am_insertupdate($data,'client_personal_details','client_id',$_POST['client_id']);
 	
 	if($data1['property_type'] == 'commercial')
 	{
@@ -132,7 +132,7 @@ if($_REQUEST['mode'] == "Update")
 	}
 	
 	
-	am_insertupdate($data1,'client_property','property_id',$_POST['property_id']);
+	am_insertupdate($data1,'client_property_new','property_id',$_POST['property_id'], $latlong);
 	
 	//echo "delete * from client_area where property_area_id=".$_POST['property_id'];
 	
@@ -140,7 +140,7 @@ if($_REQUEST['mode'] == "Update")
 	$sql="delete  from client_area where property_area_id=".$_POST['property_id'];
 	mysql_query($sql);
 	
-	*/
+	
 	
 	//am_insertupdate($data2,'client_area','area_id',$_POST['area_id']);
 	
@@ -156,7 +156,7 @@ if($_REQUEST['mode'] == "Update")
 			am_insertupdate($data2,'client_area');	
 		}
 	
-		
+	*/	
 	$msg = "Record Updated Successfully!";
 	am_goto_page("index.php?rel=edit_property&id=".$_POST['property_id']."&msg=".$msg);
 }
@@ -168,7 +168,8 @@ else if($_REQUEST['mode'] == "Add")
 	
 	$client_id=$_POST['customer_id'];
 	$data1['client_property_id'] = $client_id;
-	am_insertupdate($data1,'client_property_new');
+	am_insertupdate($data1,'client_property_new', '', '', $latlong);
+	//am_insertupdate($data1,'client_property_new');
 	// var_dump($data1);
 	//$property_id=mysql_insert_id();
 	/*
@@ -190,10 +191,9 @@ else if($_REQUEST['mode'] == "Add")
 	am_insertupdate($data3,'client_property','property_id',$property_id);
 	*/
 	
-	
-	/*
+
 	$msg = "Record Added Successfully!";
 	am_goto_page("index.php?rel=common_listing&module=property&customer_id=".$client_id."&msg=".$msg);
-	*/
+
 }
 ?>

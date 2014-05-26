@@ -497,14 +497,19 @@ function get_fieldarray()
 										array("email","Email ID","left","15","Y",""),
 										array("pan_card_num","Pan Card No","left","15","Y","",'','N'),
 										array("broker_id","Listings","left","6","Y","broker_property",'listing_count'),
+										array("CONCAT(pr.add_line1,' ',pr.add_line2,' ',pr.add_line3)","Address","left","17","N",""),
 										array("broker_id","Broker Details","left","20","N","broker_action_for_company_module",'no_sorting','N'),
 										array("company_id","","","","N","")
 										),
 
-				  "leftjoin" => " left join broker_firm as broker_firm on broker_firm.company_id=broker.firm_id ",
+				/* "leftjoin" => " left join broker_firm as broker_firm on broker_firm.company_id=broker.firm_id ",*/
+				  "leftjoin" => " LEFT JOIN broker AS broker ON broker.firm_id = broker_firm.company_id  AND broker.is_active =1 LEFT JOIN property_requirement AS pr ON pr.broker_owner_id = broker.broker_id and pr.is_active = 1 ",
 				  "lastfield" => "Firm Details",
-				  "tablename" => "broker",
-				  "orderby" => "broker_name"
+				  "tablename" => "broker_firm",
+				  "orderby" => "company_id",
+				  "rowsCountBy"=>"company_name",
+				  "foRrunTimeTableName"=>"broker",
+				  "groupByFieldName"=>"GROUP BY broker_firm.company_id"
 				  	            );			  	
 	$fieldarr['broker'] = array ("primaryid"=>"broker_id",
 					"editlink" => "index.php?&rel=edit_broker&id=",
@@ -543,7 +548,8 @@ function get_fieldarray()
 								                        	array("CONCAT(f_name,' ',l_name)","Owner Name","left","9","Y",""),
 								                        	array("mobile_no","Mobile No","left","10","Y",""),
 								                        	array("email1","Email ID","left","16","Y",""),
-								                        	array("client_id","Listings","left","13","N","owner_property"),
+								                        	array("client_id","Listings","left","9","N","owner_property"),
+								                        	array("CONCAT(pr.add_line1,' ',pr.add_line2,' ',pr.add_line3)","Address","left","17","N",""),
 								                        	array("client_id","Days Old in System","left","10","N","days_old")),
 				                       "leftjoin" => "left join property_requirement as pr on client_personal_details.client_id=pr.broker_owner_id", 
 				                        "tablename" => "client_personal_details",
@@ -554,7 +560,7 @@ function get_fieldarray()
 					"editlink" => "index.php?&rel=view_property&id=",
 					"addlink" => "index.php?&rel=edit_property",
 				// array("field name","Heading", alignment","width","display in  serach","function name" )
-				                        "fieldarr" => array(array("property_id","ID","left","8","Y",""),array("main_property_type","Type","left","10","Y",""),array("property_type","Property Type","left","20","Y",""),array("scaleble","Area (SQFT)","left","15","Y",""),array("min_price","Min Price/Rent","left","18","Y",""),array("max_price","Max Price/Rent","left","18","Y",""),array("property_id","Property Match","left","22","N","property_match"),array("CONCAT(client_property_id,',',property_id)","Short Listed","left","22","N","short_list_match"),array("property_id","Status","left","22","Y","get_customer_lead_status")),
+				                        "fieldarr" => array(array("property_id","ID","left","8","Y",""),array("main_property_type","Type","left","10","Y",""),array("property_type","Property Type","left","20","Y",""),array("scaleble","Area (SQFT)","left","15","Y",""),array("min_price","Min Price/Rent","left","18","Y",""),array("max_price","Max Price/Rent","left","18","Y",""),array("property_id","Property Match","left","22","Y","property_match"),array("CONCAT(client_property_id,',',property_id)","Short Listed","left","22","N","short_list_match"),array("property_id","Status","left","22","Y","get_customer_lead_status")),
 				                        
 				                        "tablename" => "client_property",
 				                        "orderby" => "property_id"
@@ -1070,19 +1076,26 @@ function owner_property($customer_id)
 function broker_property($customer_id)
 {
 	$html = '';
+	if($customer_id > 0)
+	{
 	// Count Brokers for each firm
-	$req = "SELECT COUNT(broker_owner_id) AS totalListing FROM property_requirement WHERE is_active=1 AND broker_owner_id = '".$customer_id."' and ( flag='brokerdirect' || flag='indirect' ) ";
-	$prop_req = am_select($req);
-	$prop_req_count = $prop_req[0]['totalListing'];
+		$req = "SELECT COUNT(broker_owner_id) AS totalListing FROM property_requirement WHERE is_active=1 AND broker_owner_id = '".$customer_id."' and ( flag='brokerdirect' || flag='indirect' ) ";
+		$prop_req = am_select($req);
+		$prop_req_count = $prop_req[0]['totalListing'];
 
-	$query_update = "UPDATE broker SET listing_count =".$prop_req_count." where is_active=1 AND broker_id = ".$customer_id;
-	$prop_req = am_select($query_update);
+		$query_update = mysql_query("UPDATE broker SET listing_count =".$prop_req_count." where is_active=1 AND broker_id = ".$customer_id);
+		//$prop_req = am_select($query_update);
+		
+		$req_listing_Id = "SELECT listing_count FROM broker WHERE is_active=1 AND broker_id = ".$customer_id;
+		$res_listing_Id = am_select($req_listing_Id);
+		$html .= "<span><a href='index.php?rel=common_listing&module=broker_property&broker_id=".$customer_id."' target='_blank' >".$res_listing_Id[0]['listing_count']."</a></span>&nbsp;&nbsp;&nbsp;";
+    }
+    else
+    {
+    	$html .= "<span>-</span>&nbsp;&nbsp;&nbsp;";
+    }
+
 	
-	$req_listing_Id = "SELECT listing_count FROM broker WHERE is_active=1 AND broker_id = ".$customer_id;
-	$res_listing_Id = am_select($req_listing_Id);
-
-
-	$html .= "<span><a href='index.php?rel=common_listing&module=broker_property&broker_id=".$customer_id."' target='_blank' >".$res_listing_Id[0]['listing_count']."</a></span>&nbsp;&nbsp;&nbsp;";
 	
 	return $html;
 }

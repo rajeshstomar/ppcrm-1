@@ -18,6 +18,10 @@ $lastfield = $modulearray[$module]['lastfield'];
 $primaryid = $modulearray[$module]['primaryid'];
 $editlink = $modulearray[$module]['editlink'];
 $leftjoin = $modulearray[$module]['leftjoin'];
+$rowsCountBy = $modulearray[$module]['rowsCountBy'];
+$foRrunTimeTableName = $modulearray[$module]['foRrunTimeTableName'];
+$groupByFieldName = $modulearray[$module]['groupByFieldName'];
+
 
 //echo"<pre>";print_r($tablename); exit;
 //echo"<pre>";print_r($lastfield); exit;
