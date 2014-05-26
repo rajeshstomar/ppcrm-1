@@ -301,3 +301,7 @@ background:url('../images/fancybox12.png') -40px 0px;
     cursor: pointer;
     width: 42px;
 }
+/*table,th,td{
+	 border: 1px solid #666666;
+
+}*/

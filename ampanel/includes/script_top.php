@@ -37,6 +37,7 @@ else
 $_SESSION['template_name']='default_am';
 $_SESSION['language_name']='english';
 
+
 require('includes/function.php');
 require('includes/database_tables.php');
 require('includes/filenames.php');
@@ -47,7 +48,7 @@ $cn = mysql_connect(DB_SERVER, DB_SERVER_USERNAME, DB_SERVER_PASSWORD);
 if (!$cn) {    die('Not connected : ' . mysql_error()); }
 
 // make connection to the current db
-$db_selected = mysql_select_db(DB_DATABASE, $cn);
+$db_selected = mysql_select_db(DB_DATABASE);
 if (!$db_selected) { die ('Can\'t use '.DB_DATABASE.' : ' . mysql_error()); }
 
 // get customers unique IP that paypal does not touch

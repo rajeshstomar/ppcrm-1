@@ -143,7 +143,7 @@ function am_insertupdate_client_requirement($data, $table,$pid='',$id=''){
 function am_enum_select( $table , $field ){ 
         $query = " SHOW COLUMNS FROM ".$table." LIKE '".$field."' "; 
         $result = mysql_query( $query ) or die( 'error getting enum field ' . mysql_error() ); 
-        $row = mysql_fetch_array( $result , MYSQL_NUM ); 
+        $row = mysql_fetch_array( $result , mysql_NUM ); 
         $regex = "/'(.*?)'/"; 
         //$regex = "/'[^"\\\r\n]*(\\.[^"\\\r\n]*)*'/"; 
         preg_match_all( $regex , $row[1], $enum_array ); 

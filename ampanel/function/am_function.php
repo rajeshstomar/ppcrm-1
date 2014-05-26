@@ -259,7 +259,7 @@ function am_fetch_customer($product_id){
 	$sql = "SELECT customer_id FROM ".TABLE_PRODUCTS_TO_CUSTOMER." WHERE product_id= '".$product_id."'";
 	$data = mysql_query($sql);
 	$strCustomer = Array();	
-	while($result = mysql_fetch_array($data,MYSQL_ASSOC))
+	while($result = mysql_fetch_array($data,mysql_ASSOC))
 	{
 	  $strCustomer[] = $result['customer_id'];
 	}
@@ -290,7 +290,7 @@ function am_fetch_customer($product_id,$link_id = ''){
 			$cust_sql = "SELECT customer_id FROM ".TABLE_ZOHO_LINKS_TO_CUSTOMER." WHERE link_id= '".$link_id."'";
 			$data 	     = mysql_query($cust_sql);
 			$strCustomer = Array();	
-			while($result = mysql_fetch_array($data,MYSQL_ASSOC))
+			while($result = mysql_fetch_array($data,mysql_ASSOC))
 			{
 			  $strCustomer[] = $result['customer_id'];
 			}
@@ -302,7 +302,7 @@ function am_fetch_customer($product_id,$link_id = ''){
 			$sql = "SELECT customer_id FROM ".TABLE_PRODUCTS_TO_CUSTOMER." WHERE product_id= '".$product_id."'";
 			$data = mysql_query($sql);
 			$strCustomer = Array();	
-			while($result = mysql_fetch_array($data,MYSQL_ASSOC))
+			while($result = mysql_fetch_array($data,mysql_ASSOC))
 			{
 			  $strCustomer[] = $result['customer_id'];
 			}
@@ -402,7 +402,7 @@ function am_fetch_multiple_customer($portfolio_id){
 			$sql = "SELECT customer_id FROM ".TABLE_CUSTOMER_TO_PORTFOLIO." WHERE portfolio_id= '".$portfolio_id."'";
 			$data = mysql_query($sql);
 			$strCustomer = Array();	
-			while($result = mysql_fetch_array($data,MYSQL_ASSOC))
+			while($result = mysql_fetch_array($data,mysql_ASSOC))
 			{
 			  $strCustomer[] = $result['customer_id'];
 			}
@@ -600,13 +600,13 @@ $fieldarr['broker_property'] = array (	"primaryid"=>"broker_property_id",
 					"addlink" => "index.php?&rel=edit_owner_property",
 				// array("field name","Heading", alignment","width","display in  serach","function name" )
 					"fieldarr" => array(
-array("broker_property_id","ID","left","25","Y",""),
-						array("trans_type","Type","left","22","Y",""),
-										array("property_main_type","Property Type","left","22","Y",""),
-										array("broker_property_id","Apartment Type","left","22","Y","get_apartment_type"),
-										array("scaleble","Area(sq ft)","left","22","Y",""),
-										array("add_line3","Area","left","22","Y",""),
-										array("price","Price / Rent","left","22","Y",""),
+										array("broker_property_id","ID","left","7","Y",""),
+										array("trans_type","Type","left","11","Y",""),
+										array("property_main_type","Property Type","left","11","Y",""),
+										array("broker_property_id","Apartment Type","left","11","Y","get_apartment_type"),
+										array("scaleble","Area(sq ft)","left","10","Y",""),
+										array("CONCAT(add_line1,' ',add_line2,' ',add_line3)","Address","left","22","Y",""),
+										array("price","Price / Rent","left","10","Y",""),
 										array("broker_property_id","Interested Customer","left","22","Y","am_get_interested_cust")),
 										
 					"tablename" => "property_requirement",
