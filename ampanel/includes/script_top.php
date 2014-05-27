@@ -66,10 +66,12 @@ $sectionArray=array( 'No Section' , 'Key Engineering Staff');
 $projectArray=array( 'Development Projects' , 'Residential Projects' , 'Commercial Projects' , 'Hotel and Resort Projects' , 'Industrial Projects', 'Marine Projects' , 'Subdivision Projects' );
 
 /* advanced search for company/firm's broker array fields  */
-
 $refineSearch_company =array( "broker_name" => "Name" , "company_name" => "Firm Name" , "mobile" => "Mobile", "area"=>"Area", "sector"=>"Sector", "category"=>"Category" , "email"=> "Email" , "pan_card_num"=> "Pan Card No", "pin_code"=> "Pin Code", "address"=> "Address");
 
-/* advanced search for company/firm's broker array fields  */
+/* advanced search for customer module array fields  */
 $refineSearch_customer =array( "client_id" => "ID","customer_name" => "Name" , "mobile_no" => "Mobile","email"=> "Email");
+
+/* advanced search for Owner module array fields  */
+$refineSearch_owner =array("client_id" => "ID","customer_name" => "Name" , "mobile_no" => "Mobile","email"=> "Email","area"=>"Area", "sector"=>"Sector","address"=> "Address");
 
 ?>

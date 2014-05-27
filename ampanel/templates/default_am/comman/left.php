@@ -16,6 +16,7 @@
         <li id="lm_customer_import"><a href="index.php?&rel=customer_import" class="greenlink_bold" target="_self">Customer / Requirement</a></li>
         <li id="lm_owner_import">  <a href="index.php?&rel=owner_import" class="greenlink_bold" target="_self">Owner / Property</a></li>
         <li id="lm_log"><a href="index.php?rel=common_listing&module=log" class="greenlink_bold" target="_self">Upload Logs</a></li>
+        <li id="lm_rating"><a href="index.php?rel=common_rating&module=rating" class="greenlink_bold" target="_self">Rating</a></li>
     </ul>
 </div>
 </td> 

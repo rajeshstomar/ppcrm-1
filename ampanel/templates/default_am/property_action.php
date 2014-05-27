@@ -132,7 +132,7 @@ if($_REQUEST['mode'] == "Update")
 	}
 	
 	
-	am_insertupdate($data1,'client_property_new','property_id',$_POST['property_id'], $latlong);
+	am_insertupdate($data1,'client_property','property_id',$_POST['property_id'], $latlong);
 	
 	//echo "delete * from client_area where property_area_id=".$_POST['property_id'];
 	
@@ -168,7 +168,7 @@ else if($_REQUEST['mode'] == "Add")
 	
 	$client_id=$_POST['customer_id'];
 	$data1['client_property_id'] = $client_id;
-	am_insertupdate($data1,'client_property_new', '', '', $latlong);
+	am_insertupdate($data1,'client_property', '', '', $latlong);
 	//am_insertupdate($data1,'client_property_new');
 	// var_dump($data1);
 	//$property_id=mysql_insert_id();

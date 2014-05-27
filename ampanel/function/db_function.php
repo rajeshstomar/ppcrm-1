@@ -98,52 +98,10 @@ function am_insertupdate($data,$table,$pid='',$id='',$latlong='')
 	}
 
 }
-function am_insertupdate_client_requirement($data, $table,$pid='',$id=''){
-	$main_property_type = $data['main_property_type'];
-	$property_type = $data['property_type'];
-	$onerk = $data['onerk'];
-	$onebhk = $data['onebhk'];
-	$twobhk = $data['twobhk'];
-	$threebhk = $data['threebhk'];
-	$fourbhk = $data['fourbhk+'];
-			
-	$specify_area = $data['specify_area'];
-	$scaleble = $data['scaleble'];
-	$carpet = $data['carpet'];
-	$office = $data['office'];
-			//'retail' = $data['retail'];
-	$furnished = $data['furnished'];
-			//'unfurnished' = $data['unfurnished'];
-	$warm_cell = $data['warm_cell'];
-	$state 	= $data['state'];
-	$city 	= $data['city'];
-	$locality 	= $data['locality'];
-	$sector 	= $data['sector'];
-	$near_building 	= $data['near_building'];
-	$is_choice_flex 	= $data['is_choice_flex'];
-	$flex_pref 	= $data['flex_pref'];
-	$flex_distance 	= $data['flex_distance'];
-	$latlong		= $data['latlong'];
-			//'cold_cell' = $data['cold_cell'];
-	$min_price = $data['min_price'];
-	$max_price = $data['max_price'];
-	$status = $data['status'];
-	$client_pro_created_date = $data['client_pro_created_date'];
-	if($id == ''){
-		$client_property_id = $data['client_property_id'];
-
-		$key_arr = @implode(",",array_keys($data));
-
-		$sql = "INSERT INTO ".$table." ( ".$key_arr." ) values ('". $main_property_type ."', '".$property_type."', '".$onerk."', '".$onebhk."', '".$twobhk."', '".$threebhk."', '".$fourbhk."', '".$specify_area."', '".$scaleble."', '".$carpet."', '".$office."', '".$furnished."', '".$warm_cell."', '".$state."', '".$city."', '".$locality."', '".$sector."', '".$near_building."', '".$is_choice_flex."', '".$flex_pref."', '".$flex_distance."', GeomFromText('".$latlong."'), '".$min_price."', '".$max_price."', '".$status."', '".$client_pro_created_date."', '".$client_property_id."' )";
-		$query = mysql_query($sql) or die($sql.'<br/>'.mysql_error());
-	}else{
-
-	}
-}
 function am_enum_select( $table , $field ){ 
         $query = " SHOW COLUMNS FROM ".$table." LIKE '".$field."' "; 
         $result = mysql_query( $query ) or die( 'error getting enum field ' . mysql_error() ); 
-        $row = mysql_fetch_array( $result , mysql_NUM ); 
+        $row = mysql_fetch_array( $result , MYSQL_NUM ); 
         $regex = "/'(.*?)'/"; 
         //$regex = "/'[^"\\\r\n]*(\\.[^"\\\r\n]*)*'/"; 
         preg_match_all( $regex , $row[1], $enum_array ); 

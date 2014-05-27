@@ -251,8 +251,7 @@ else
 		</select> -->
 
 		<input type="text" name="filter" id="filter" value="<?php echo $_POST['filter'];?>" >
-		<input type="submit" name="filter1" value="Search">
-		<span title="Search By Nearest Building,Area,Nearest Road,Street Name,City" alt="Search By Nearest Building,Area,Nearest Road,Street Name,City">?</span>
+		<input type="submit" name="filter1" title="Search By Nearest Building,Area,Nearest Road,Street Name,City"  value="Search">
 		</td>
 	</tr>
 </table>
@@ -303,8 +302,11 @@ else
 		<div class="prop_match">
 			<div class="pro_left">
 				<p><b><?php echo  $i+1;  ?>)</b></p>
-				<p><b>Nearest Building:</b> &nbsp;&nbsp;<?php echo  $match_res[$i]['b_name'];  ?> </p>
-				<p><b>Property Location :</b> &nbsp;&nbsp;<?php echo  $match_res[$i]['floor'].", ".$match_res[$i]['add_line1'].", ".$match_res[$i]['add_line2'].", ".$match_res[$i]['add_line3'].", ".$match_res[$i]['city'];  ?> </p>
+				<?php if($match_res[$i]['b_name']) { ?>
+					<p><b>Nearest Building:</b> &nbsp;&nbsp;<?php echo  $match_res[$i]['b_name'];  ?> </p>
+				<?php } ?>
+				
+				<p><b>Property Location :</b> &nbsp;&nbsp;<?php echo  $match_res[$i]['flat'].", ".$match_res[$i]['nearest_road'].", ".$match_res[$i]['sector'].", ".$match_res[$i]['locality'].", ".$match_res[$i]['city'];  ?> </p>
 				<p><b>Property type:</b>&nbsp;&nbsp; <?php echo ucfirst($match_res[$i]['property_main_type']); ?>&nbsp;&nbsp;&nbsp;&nbsp;<b>Approximate Area :</b>&nbsp;&nbsp;<?php echo  $match_res[$i]['scaleble']; ?> Sq.Ft.&nbsp;&nbsp;&nbsp;&nbsp;</p>
 				<p><b>Price :</b>&nbsp;&nbsp;<?php echo  $match_res[$i]['price']; ?></p>
 				<?php if(!empty($types)) { ?>

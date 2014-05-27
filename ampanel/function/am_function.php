@@ -457,56 +457,29 @@ function get_fieldarray()
 {
 
 	$fieldarr = array();
-	
-	
-				
-	/*$fieldarr['customer'] = array (	"primaryid"=>"client_id",
-					"editlink" => "index.php?&rel=edit_customer&id=",
-					"addlink" => "index.php?&rel=edit_customer",
-				// array("field name","Heading", alignment","width","display in  serach","function name" )
-				                        "fieldarr" => array(array("client_id","ID","left","25","Y",""),array("date","Date","left","22","Y",""),array("place","Place","left","22","Y",""),array("f_name","First Name","left","22","Y",""),array("l_name","Last Name","left","22","Y",""),array("country","Country","left","22","Y",""),array("state","State","left","22","Y",""),array("add_line1","Address  line 1","left","22","Y",""),array("add_line2","Address  line 2","left","22","Y",""),array("add_line3","Address  line 3","left","22","Y",""),array("zip_code","Zip Code","left","22","Y",""),array("city","City","left","22","Y",""),array("mobile","Mobile","left","22","Y",""),array("office","Office","left","22","Y",""),array("email1","E-mail1","left","22","Y",""),array("email2","E-mail2","left","22","Y",""),array("calls_noti","calls_noti","left","22","Y",""),array("sms_noti","sms_noti","left","22","Y",""),array("email_noti","email_noti","left","22","Y",""),array("remark","Remark","left","22","Y","")),
-				                        "tablename" => "client_personal_details",
-				                        "orderby" => "client_id"
-				                        
-				
-				); */
-	## commented by Rajesh old array			
-	/*$fieldarr['company'] = array("primaryid"=>"company_id",
-					"editlink" => "index.php?&rel=edit_company&mode=view&id=",
-					"addlink" => "index.php?&rel=edit_company",
-				// array("field name","Heading", alignment","width","display in  serach","function name" )
-					"fieldarr" => array(array("company_name","Company/Firm Name","left","20","Y",""),
-										array("nature_company","Nature Of Company","left","19","Y",""),
-										array("place","Outlet Location","left","16","Y",""),
-										array("company_id","No Of Memebr Broker","left","23","Y","broker_count"),
-										array("company_id","Listing Done","left","23","Y","listing_count"),
-										array("company_id","Broker Details","left","20","N","broker_action")),
-											  "leftjoin" => " left join broker as b on broker_firm.company_id=b.firm_id ",
-				                              "lastfield" => "Firm Details",
-				                              "tablename" => "broker_firm",
-				                              "orderby" => "company_id"
-				  	            ); */
+
 	## new Array defined as per requirment for listing of broker.  //Rajesh
 	$fieldarr['company'] = array(
 					"primaryid"=>"broker_id",
 					"editlink" => "index.php?&rel=edit_company&mode=view&id=",
 					"addlink" => "index.php?&rel=edit_company",
-					"fieldarr" => array(array("broker_name","Broker Name","left","10","Y",""),
-										array("company_name","Firm Name","left","10","Y",""),
-										array("mobile1_no","Mobile No","left","15","Y",""),
-										array("email","Email ID","left","15","Y",""),
-										array("pan_card_num","Pan Card No","left","15","Y","",'','N'),
-										array("broker_id","Listings","left","6","Y","broker_property",'listing_count'),
-										array("CONCAT(pr.add_line1,' ',pr.add_line2,' ',pr.add_line3)","Address","left","17","N",""),
-										array("broker_id","Broker Details","left","20","N","broker_action_for_company_module",'no_sorting','N'),
+					"fieldarr" => array(array("broker_name","Broker Name","left","9","Y",""),
+										array("company_name","Firm Name","left","9","Y",""),
+										array("mobile1_no","Mobile No","left","14","Y",""),
+										array("email","Email ID","left","14","Y",""),
+										//array("pan_card_num","Pan Card No","left","14","Y","",'','N'),
+										array("broker_id","Listings","left","5","Y","broker_property",'listing_count'),
+										array("CONCAT(add_line1,' ',add_line2_1,' ',add_line2_2,' ',city)","Address","left","16","N",""),
+										array("DATE_FORMAT(`broker_created_date`,'%Y-%m-%d')","Created Date","left","14","N",""),						
+										array("broker_id","Edit Broker","left","19","N","broker_action_for_company_module",'no_sorting','N'),
 										array("company_id","","","","N","")
 										),
 
-				/* "leftjoin" => " left join broker_firm as broker_firm on broker_firm.company_id=broker.firm_id ",*/
-				  "leftjoin" => " LEFT JOIN broker AS broker ON broker.firm_id = broker_firm.company_id  AND broker.is_active =1 LEFT JOIN property_requirement AS pr ON pr.broker_owner_id = broker.broker_id and pr.is_active = 1 ",
+				"leftjoin" => "LEFT JOIN broker AS broker ON broker.firm_id = broker_firm.company_id  AND broker.is_active =1",
+				 /* "leftjoin" => " LEFT JOIN broker AS broker ON broker.firm_id = broker_firm.company_id  AND broker.is_active =1 LEFT JOIN property_requirement AS pr ON pr.broker_owner_id = broker.broker_id and pr.is_active = 1 ",*/
 				  "lastfield" => "Firm Details",
 				  "tablename" => "broker_firm",
-				  "orderby" => "company_id",
+				  "orderby" => "broker_created_date",
 				  "rowsCountBy"=>"company_name",
 				  "foRrunTimeTableName"=>"broker",
 				  "groupByFieldName"=>"GROUP BY broker_firm.company_id"
@@ -548,19 +521,20 @@ function get_fieldarray()
 								                        	array("CONCAT(f_name,' ',l_name)","Owner Name","left","9","Y",""),
 								                        	array("mobile_no","Mobile No","left","10","Y",""),
 								                        	array("email1","Email ID","left","16","Y",""),
-								                        	array("client_id","Listings","left","9","N","owner_property"),
+								                        	array("client_id","Listings","left","7","N","owner_property"),
 								                        	array("CONCAT(pr.add_line1,' ',pr.add_line2,' ',pr.add_line3)","Address","left","17","N",""),
-								                        	array("client_id","Days Old in System","left","10","N","days_old")),
+								                        	array("client_id","Days Old in System","left","12","N","days_old")),
 				                       "leftjoin" => "left join property_requirement as pr on client_personal_details.client_id=pr.broker_owner_id", 
-				                        "tablename" => "client_personal_details",
-				                        "orderby" => "client_id"
+				                       "tablename" => "client_personal_details",
+				                       "orderby" => "client_id",
+				                       "groupByFieldName"=>"GROUP BY client_personal_details.client_id"
 				  	);				  	
 				  	
 	$fieldarr['property'] = array (	"primaryid"=>"property_id",
 					"editlink" => "index.php?&rel=view_property&id=",
 					"addlink" => "index.php?&rel=edit_property",
 				// array("field name","Heading", alignment","width","display in  serach","function name" )
-				                        "fieldarr" => array(array("property_id","ID","left","8","Y",""),array("main_property_type","Type","left","10","Y",""),array("property_type","Property Type","left","20","Y",""),array("scaleble","Area (SQFT)","left","15","Y",""),array("min_price","Min Price/Rent","left","18","Y",""),array("max_price","Max Price/Rent","left","18","Y",""),array("property_id","Property Match","left","22","Y","property_match"),array("CONCAT(client_property_id,',',property_id)","Short Listed","left","22","N","short_list_match"),array("property_id","Status","left","22","Y","get_customer_lead_status")),
+				                        "fieldarr" => array(array("property_id","ID","left","8","Y",""),array("main_property_type","Type","left","10","Y",""),array("property_type","Property Type","left","20","Y",""),array("scaleble","Area (SQFT)","left","15","Y",""),array("min_price","Min Price/Rent","left","18","Y",""),array("max_price","Max Price/Rent","left","18","Y",""),array("property_id","Property Match","left","22","N","property_match"),array("CONCAT(client_property_id,',',property_id)","Short Listed","left","22","N","short_list_match"),array("property_id","Status","left","22","Y","get_customer_lead_status")),
 				                        
 				                        "tablename" => "client_property",
 				                        "orderby" => "property_id"
@@ -1079,12 +1053,12 @@ function broker_property($customer_id)
 	if($customer_id > 0)
 	{
 	// Count Brokers for each firm
-		$req = "SELECT COUNT(broker_owner_id) AS totalListing FROM property_requirement WHERE is_active=1 AND broker_owner_id = '".$customer_id."' and ( flag='brokerdirect' || flag='indirect' ) ";
+		/*$req = "SELECT COUNT(broker_owner_id) AS totalListing FROM property_requirement WHERE is_active=1 AND broker_owner_id = '".$customer_id."' and ( flag='brokerdirect' || flag='indirect' ) ";
 		$prop_req = am_select($req);
 		$prop_req_count = $prop_req[0]['totalListing'];
 
-		$query_update = mysql_query("UPDATE broker SET listing_count =".$prop_req_count." where is_active=1 AND broker_id = ".$customer_id);
-		//$prop_req = am_select($query_update);
+		$query_update = "UPDATE broker SET listing_count =".$prop_req_count." where is_active=1 AND broker_id = ".$customer_id;
+		$prop_req = am_select($query_update);*/
 		
 		$req_listing_Id = "SELECT listing_count FROM broker WHERE is_active=1 AND broker_id = ".$customer_id;
 		$res_listing_Id = am_select($req_listing_Id);
@@ -1128,11 +1102,138 @@ function days_old($customer_id)
 	
 	return $html;
 }
+function get_property_data($property_id)
+{
+		$query = mysql_query("SELECT * FROM client_property WHERE property_id LIKE $property_id") or die(mysql_error());
+		$array = mysql_fetch_array($query);
+		$bhk[] = 0;
+		if($array['onerk'] == 1)
+			$bhk[] = 1;
+		if($array['onebhk'] == 1)
+			$bhk[] = 2;
+		if($array['twobhk'] == 1)
+			$bhk[] = 3;
+		if($array['threebhk'] == 1)
+			$bhk[] = 4;
+		if($array['fourbhk'] == 1)
+			$bhk[] = 5;
+		$area = $array['scaleble'];
+		$office = $array['office'];
+		$furnished = $array['furnished'];
+		$warm_cell = $array['warm_cell'];
+		$is_choice_flex = $array['is_choice_flex'];
+		$flex_pref = $array['flex_pref'];
+		$flex_distance = $array['flex_distance'];
+		$min_price = $array['min_price'];
+		$max_price = $array['max_price'];
+		$main_property_type = $array['main_property_type'];
+		$client_property_id = $array['client_property_id'];
+		return json_encode(array('area'=>$area, 'office'=>$office, 'retail'=>$retail, 'bhk'=>implode(',',$bhk), 'furnished'=>$furnished, 'warm_cell'=>$warm_cell, 'flex_distance'=>$flex_distance, 'flex_pref'=>$flex_pref, 'is_choice_flex'=>$is_choice_flex, 'min_price'=>$min_price, 'max_price'=>$max_price,'client_property_id'=>$client_property_id, 'property_id'=>$property_id, 'main_property_type'=>$main_property_type));
+}
+function get_matching_properties($array){
+		if($array->is_choice_flex){
+			if($array->office){
+				$sql = "
+				SELECT A.*
+				FROM property_requirement AS A, (
 
+				SELECT latlong, sector, locality
+				FROM client_property
+				WHERE property_id =$array->property_id
+				) AS B
+				WHERE (
+				POW( (
+				X( A.latlong ) - X( B.latlong ) ) * 111.12, 2
+				) + POW( (
+				Y( A.latlong ) - Y( B.latlong ) ) * 111.12, 2
+				)
+				) <= POW( ".$array->flex_distance.", 2 ) 
+				AND A.sector LIKE B.sector
+				AND A.locality LIKE B.locality
+				AND A.office = $array->office
+				AND A.warm_cell = $array->warm_cell
+				AND A.price >= ".$array->min_price." 
+				AND A.price <= ".$array->max_price."
+				AND A.trans_type LIKE '".$array->main_property_type."%'
+				ORDER BY A.price;		
+			";
+			}else{
+				$sql = "
+				SELECT A.*
+				FROM property_requirement AS A, (
 
+				SELECT latlong, sector, locality
+				FROM client_property
+				WHERE property_id =$array->property_id
+				) AS B
+				WHERE (
+				POW( (
+				X( A.latlong ) - X( B.latlong ) ) * 111.12, 2
+				) + POW( (
+				Y( A.latlong ) - Y( B.latlong ) ) * 111.12, 2
+				)
+				) <= POW( ".$array->flex_distance.", 2 ) 
+				AND A.sector LIKE B.sector
+				AND A.locality LIKE B.locality
+				AND A.onerk IN (".$array->bhk.")
+				AND A.furnished = $array->furnished
+				AND A.price >= ".$array->min_price." 
+				AND A.price <= ".$array->max_price."
+				AND A.trans_type LIKE '".$array->main_property_type."%'
+				ORDER BY A.price;		
+			";
+			}
+		}else{
+			if($array->office){
+					$sql = "
+					SELECT A.*
+					FROM property_requirement AS A, (
+
+					SELECT latlong, sector, locality
+					FROM client_property
+					WHERE property_id =$array->property_id
+					) AS B
+					WHERE A.sector LIKE B.sector
+					AND A.locality LIKE B.locality
+					AND A.office = $array->office
+					AND A.warm_cell = $array->warm_cell
+					AND A.price >= ".$array->min_price." 
+					AND A.price <= ".$array->max_price."
+					AND A.trans_type LIKE '".$array->main_property_type."%'
+					ORDER BY A.price;		
+				";
+			}else{
+					$sql = "
+					SELECT A.*
+					FROM property_requirement AS A, (
+
+					SELECT latlong, sector, locality
+					FROM client_property
+					WHERE property_id =$array->property_id
+					) AS B
+					WHERE A.sector LIKE B.sector
+					AND A.locality LIKE B.locality
+					AND A.onerk IN (".$array->bhk.")
+					AND A.furnished = $array->furnished
+					AND A.price >= ".$array->min_price." 
+					AND A.price <= ".$array->max_price."
+					AND A.trans_type LIKE '".$array->main_property_type."%'
+					ORDER BY A.price;		
+				";
+			}
+		}
+		//$array = mysql_fetch_array($query) or die(mysql_error());
+		return $sql;
+		
+}
 
 function property_match($property_id)
 {
+	$main_array = json_decode(get_property_data($property_id));
+	$match_query = get_matching_properties($main_array);
+	// $new_sql;
+	//$result = am_select($new_sql);
+	/*
 	$sql = "SELECT cp.* FROM client_property as cp WHERE property_id = '".$property_id."' ";
 	$prop_res = am_select($sql);
 	//print_R($prop_res); exit;
@@ -1209,13 +1310,13 @@ function property_match($property_id)
 	$match_query_new = "SELECT bd.id_building,bd.b_name, pr.* FROM property_requirement as pr LEFT JOIN building_database as bd ON bd.id_building = pr.near_building_id WHERE ".implode('AND',$where)." order by pr.price ";
 
 	//echo "<br>".$match_query;
-
+	*/
 	$match_res = am_select($match_query);
 	$count = '';
 	if(count($match_res) > 0)
 	{
 		$count = '('.count($match_res).')';
-		$link = "<a href='index.php?rel=matching_property&customer_id=".$prop_res[0]['client_property_id']."&propery_id=".$property_id."' >View ".$count."</a>";
+		$link = "<a href='index.php?rel=matching_property&customer_id=".$main_array->client_property_id."&propery_id=".$property_id."' >View ".$count."</a>";
 	}
 	else
 	{
